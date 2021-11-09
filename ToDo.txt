@@ -1,5 +1,0 @@
-1. 连接PHP和MySQL
-2. 数据库储存（Github/Dummy Data） / 数据库脚本生成（.sql文件）
-3. 注册模块
-4. 登陆模块
-5. 新建item
