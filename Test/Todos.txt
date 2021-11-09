@@ -1,7 +1,17 @@
+# Project Todos
 1.连接PHP与MySQL                           Done
 2.PHP对SQL操作语句 /导出.sql文件             Done Partly
 3.注册模块
 4.登陆模块
+5.创建Item
 
+# Questions
 1. http://localhost:8888/Test/Test.php 和 http://localhost:8888/COMP0178/test/Test.php
    Done Settings Deployment
+
+# Configuration
+1. GitHub
+2. Interpreter
+3. MySQl
+4. Deployment Path
+5. Branch
