@@ -1,4 +1,7 @@
-1.连接PHP与MySQL
-2.PHP对SQL操作语句 /导出.sql文件
+1.连接PHP与MySQL                           Done
+2.PHP对SQL操作语句 /导出.sql文件             Done Partly
 3.注册模块
 4.登陆模块
+
+1. http://localhost:8888/Test/Test.php 和 http://localhost:8888/COMP0178/test/Test.php
+   Done Settings Deployment
