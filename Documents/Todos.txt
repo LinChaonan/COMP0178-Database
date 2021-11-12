@@ -1,9 +1,22 @@
 # Project Todos
 1.连接PHP与MySQL                           Done
-2.PHP对SQL操作语句 /导出.sql文件             Done Partly
-3.注册模块
-4.登陆模块
-5.创建Item
+2.PHP对SQL操作语句 /导出.sql文件             Done
+3.注册模块                                 Week6
+4.登陆模块                                 Week6
+5.重置密码/欢迎页面                         Week6
+6.创建Item                                Week6
+
+7.搜索 / 排序                              Week7
+8.Bid系统                                 Week7
+9. ***数据库构建***                        Week7
+
+10.Email                                 Week8
+11.Recommendation                        Week8
+12.Add Extra Features                    Week8
+
+13. Report / Video                       Week10
+
+DEADLINE: 20th Dec                       Week10
 
 # Questions
 1. http://localhost:8888/Test/Test.php 和 http://localhost:8888/COMP0178/test/Test.php
