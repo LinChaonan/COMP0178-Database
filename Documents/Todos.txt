@@ -8,11 +8,11 @@
 
 7.搜索 / 排序                              Week7
 8.Bid系统                                 Week7
-9. ***数据库构建***                        Week7
+9. ***数据库构建***                        Week7 / Week9
 
 10.Email                                 Week8
 11.Recommendation                        Week8
-12.Add Extra Features                    Week8
+12.Add Extra Features                    Week8 / Week9
 
 13. Report / Video                       Week10
 
