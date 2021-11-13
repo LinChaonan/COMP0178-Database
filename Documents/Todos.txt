@@ -28,3 +28,6 @@ DEADLINE: 20th Dec                       Week10
 3. MySQl
 4. Deployment Path
 5. Branch
+
+# Extra
+1. Dump / Export by MySQL-admin
