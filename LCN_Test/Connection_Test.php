@@ -11,7 +11,7 @@ else{
 
 //Creat New Database
 
-$sql="CREATE DATABASE test";
+$sql="CREATE DATABASE database_project";
 
 if (mysqli_query($conn,$sql)){
     echo "Creating Database Successful";
