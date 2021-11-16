@@ -1,35 +1,37 @@
-<?php include_once("header.php")?>
+<?php
+
+include_once("header.php");
+require_once "config.php";
+
+?>
 
 <div class="container my-5">
 
 <?php
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $title = $_POST["auctionTitle"];
-        echo $title;
+        $details = $_POST["auctionDetails"];
+        $SPrice = $_POST["auctionStartPrice"];
+        $RPrice = $_POST["auctionReservePrice"];
+        $Date = $_POST["auctionEndDate"];
+        echo $title, $details, $SPrice, $RPrice, $Date;
 
-        $servername = "localhost";
-        $username = "root";
-        $password = "root";
-        $dbname = "test";
-
-// 创建连接
-        $conn = mysqli_connect($servername, $username, $password, $dbname);
-// 检测连接
-        if (!$conn) {
+        if (!$link) {
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $sql = "INSERT INTO auction (title)
-VALUES ('$title')";
+        $sql = "INSERT INTO auction (title,details, StartPrice, ReservePrice, EndDate)
+VALUES ('$title','$details','$SPrice','$RPrice','$Date')";
 
-        if (mysqli_query($conn, $sql)) {
+        if (mysqli_query($link, $sql)) {
             echo "新记录插入成功";
         } else {
-            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+            echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }
 
-        mysqli_close($conn);
+        mysqli_close($link);
 
 }
 // This function takes the form data and adds the new auction to the database.
