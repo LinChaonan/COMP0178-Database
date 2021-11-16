@@ -3,7 +3,35 @@
 <div class="container my-5">
 
 <?php
+if($_SERVER["REQUEST_METHOD"] == "POST"){
 
+        $title = $_POST["auctionTitle"];
+        echo $title;
+
+        $servername = "localhost";
+        $username = "root";
+        $password = "root";
+        $dbname = "test";
+
+// 创建连接
+        $conn = mysqli_connect($servername, $username, $password, $dbname);
+// 检测连接
+        if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
+
+        $sql = "INSERT INTO auction (title)
+VALUES ('$title')";
+
+        if (mysqli_query($conn, $sql)) {
+            echo "新记录插入成功";
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        }
+
+        mysqli_close($conn);
+
+}
 // This function takes the form data and adds the new auction to the database.
 
 /* TODO #1: Connect to MySQL database (perhaps by requiring a file that
@@ -19,7 +47,8 @@
 
 /* TODO #3: If everything looks good, make the appropriate call to insert
             data into the database. */
-            
+
+
 
 // If all is successful, let user know.
 echo('<div class="text-center">Auction successfully created! <a href="FIXME">View your new listing.</a></div>');
