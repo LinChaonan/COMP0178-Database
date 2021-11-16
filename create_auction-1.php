@@ -8,7 +8,7 @@ require_once "config.php";
 $title = $details = $category = "";
 
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if (isset($_POST['reg_u'])) {
         $title = $_POST["auctionTitle"];
         $details = $_POST["auctionDetails"];
         // Prepare an insert statement
