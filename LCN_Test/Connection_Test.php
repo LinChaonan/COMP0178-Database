@@ -1,5 +1,5 @@
 <?php
-//Connect Database
+//Connect ZYB_Test
 
 $conn = mysqli_connect("localhost", "root", "root");
 if($conn){
@@ -9,14 +9,14 @@ else{
     echo "Failed";
 }
 
-//Creat New Database
+//Creat New ZYB_Test
 
 $sql="CREATE DATABASE database_project";
 
 if (mysqli_query($conn,$sql)){
-    echo "Creating Database Successful";
+    echo "Creating ZYB_Test Successful";
 }else{
-    echo "Creating Database Failed".mysqli_error($conn)."";
+    echo "Creating ZYB_Test Failed".mysqli_error($conn)."";
 }
 
 ?>
