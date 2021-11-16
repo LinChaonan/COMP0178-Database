@@ -69,7 +69,7 @@
       <a class="nav-link" href="mylistings.php">My Listings</a>
     </li>
 	<li class="nav-item ml-3">
-      <a class="nav-link btn border-light" href="create_auction-1.php">+ Create auction</a>
+      <a class="nav-link btn border-light" href="creat_auction.php">+ Create auction</a>
     </li>');
   }
 ?>
