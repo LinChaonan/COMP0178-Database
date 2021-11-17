@@ -13,6 +13,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $title = $_POST["auctionTitle"];
         $details = $_POST["auctionDetails"];
+        $category =
         $SPrice = $_POST["auctionStartPrice"];
         $RPrice = $_POST["auctionReservePrice"];
         $Date = $_POST["auctionEndDate"];
