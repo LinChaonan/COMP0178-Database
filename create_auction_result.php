@@ -13,7 +13,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $title = $_POST["auctionTitle"];
         $details = $_POST["auctionDetails"];
-        $category =
+        $category = "earphone";
+        $seller = "1";
         $SPrice = $_POST["auctionStartPrice"];
         $RPrice = $_POST["auctionReservePrice"];
         $Date = $_POST["auctionEndDate"];
@@ -23,8 +24,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $sql = "INSERT INTO item (title,description, start_price, reserve_price, end_date)
-VALUES ('$title','$details','$SPrice','$RPrice','$Date')";
+        $sql = "INSERT INTO item (title,description, start_price, reserve_price, end_date, seller_id,category,status)
+VALUES ('$title','$details','$SPrice','$RPrice','$Date','1','earphone','0')";
 
         if (mysqli_query($link, $sql)) {
             echo "新记录插入成功";

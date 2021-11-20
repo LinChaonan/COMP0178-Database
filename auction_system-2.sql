@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： localhost:8889
--- 生成日期： 2021-11-20 16:40:37
+-- 生成日期： 2021-11-20 16:56:48
 -- 服务器版本： 5.7.34
 -- PHP 版本： 7.4.21
 
@@ -82,10 +82,10 @@ CREATE TABLE `item` (
   `quantity` int(10) DEFAULT '1',
   `start_price` varchar(100) NOT NULL,
   `reserve_price` varchar(100) DEFAULT NULL,
-  `current_price` varchar(100) NOT NULL,
-  `num_bids` int(100) NOT NULL,
-  `final_price` varchar(100) NOT NULL,
-  `buyer_id` int(10) NOT NULL,
+  `current_price` varchar(100) DEFAULT NULL,
+  `num_bids` int(100) NOT NULL DEFAULT '0',
+  `final_price` varchar(100) DEFAULT NULL,
+  `buyer_id` int(10) DEFAULT NULL,
   `end_date` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -96,7 +96,8 @@ CREATE TABLE `item` (
 INSERT INTO `item` (`item_id`, `seller_id`, `category`, `status`, `title`, `description`, `quantity`, `start_price`, `reserve_price`, `current_price`, `num_bids`, `final_price`, `buyer_id`, `end_date`) VALUES
 (1, 1, 'phone', '0', 'iPhone', '4th Gen', 1, '200', '50', '150', 10, '200', 2, '2027-11-20 16:39:30.000000'),
 (2, 1, 'computer', '0', 'MacBook', 'MacBook Pro 2021', 1, '500', '40', '350', 5, '400', 2, '2021-11-20 16:39:27.000000'),
-(3, 1, 'tablet', '0', 'iPad', '11th Gen', 1, '300', '30', '250', 8, '300', 2, '2021-11-20 16:39:29.000000');
+(3, 1, 'tablet', '0', 'iPad', '11th Gen', 1, '300', '30', '250', 8, '300', 2, '2021-11-20 16:39:29.000000'),
+(4, 1, 'earphone', '0', 'AirPods', 'AirPods Pro', 1, '199', '80', NULL, 0, NULL, NULL, '2021-11-19 16:55:00.000000');
 
 -- --------------------------------------------------------
 
@@ -200,7 +201,7 @@ ALTER TABLE `historical_auction_price`
 -- 使用表AUTO_INCREMENT `item`
 --
 ALTER TABLE `item`
-  MODIFY `item_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `item_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- 使用表AUTO_INCREMENT `seller`
