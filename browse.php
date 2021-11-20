@@ -58,10 +58,13 @@
 <?php
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {
-    // TODO: Define behavior if a keyword has not been specified.
+      $dt = new DateTime();
+      echo $dt->format('Y-m-d H:i:s');
+      // TODO: Define behavior if a keyword has not been specified.
   }
   else {
     $keyword = $_GET['keyword'];
+
   }
 
   if (!isset($_GET['cat'])) {
@@ -115,7 +118,7 @@
   $end_date = new DateTime('2020-09-16T11:00:00');
   
   // This uses a function defined in utilities.php
-  print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+  //print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
   
   $item_id = "516";
   $title = "Different title";
@@ -124,7 +127,38 @@
   $num_bids = 3;
   $end_date = new DateTime('2020-11-02T00:00:00');
   
-  print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+  //print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+
+  $servername = "localhost";
+  $username = "root";
+  $password = "root";
+  $dbname = "auction_system";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+ $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item ORDER BY item_id";
+ $result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        $list_id = $row["item_id"];
+        $title = $row["title"];
+        $description = $row["description"];
+        $current_price = $row["current_price"];
+        $num_bids = $row["num_bids"];
+        $end_date = $row["end_date"];
+        print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+    }
+} else {
+    echo "0 results";
+}
+$conn->close();
 ?>
 
 </ul>

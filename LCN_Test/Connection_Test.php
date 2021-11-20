@@ -11,7 +11,7 @@ else{
 
 //Creat New ZYB_Test
 
-$sql="CREATE DATABASE database_project";
+$sql="CREATE DATABASE auction_system";
 
 if (mysqli_query($conn,$sql)){
     echo "Creating ZYB_Test Successful";
