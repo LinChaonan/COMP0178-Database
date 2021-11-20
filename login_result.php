@@ -9,7 +9,7 @@ require_once "config.php";
 session_start();
 $_SESSION['logged_in'] = true;
 $_SESSION['username'] = "test";
-$_SESSION['account_type'] = "buyer";
+//$_SESSION['account_type'] = "buyer";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -18,17 +18,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     echo $email, $pwd;
 
-    $sql = "SELECT * FROM users WHERE (username='$email') AND (password='$pwd')";
+    $sql = "SELECT * FROM user WHERE (email='$email') AND (password='$pwd')";
     //执行上面的sql语句并将结果集赋给result。
     $result = $link->query($sql);
     //判断结果集的记录数是否大于0
     if ($result->num_rows > 0) {
         echo "matched";
         $_SESSION['logged_in'] = true;
+        $_SESSION['account_type'] = "seller";
         echo('<div class="text-center">You are now logged in! You will be redirected shortly.</div>');
 
         // Redirect to index after 5 seconds
-        header("refresh:5;url=welcome.php");
+        header("refresh:5;url=browse.php");
         }
     else {
     echo "无信息匹配";
