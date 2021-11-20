@@ -23,7 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $sql = "INSERT INTO auction (title,details, StartPrice, ReservePrice, EndDate)
+        $sql = "INSERT INTO item (title,description, start_price, reserve_price, end_date)
 VALUES ('$title','$details','$SPrice','$RPrice','$Date')";
 
         if (mysqli_query($link, $sql)) {
