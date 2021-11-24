@@ -94,9 +94,7 @@
   
   /* For the purposes of pagination, it would also be helpful to know the
      total number of results that satisfy the above query */
-  $num_results = 96; // TODO: Calculate me for real
-  $results_per_page = 10;
-  $max_page = ceil($num_results / $results_per_page);
+
 ?>
 
 <div class="container mt-5">
@@ -119,15 +117,7 @@
   
   // This uses a function defined in utilities.php
   //print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-  
-  $item_id = "516";
-  $title = "Different title";
-  $description = "Very short description.";
-  $current_price = 13.50;
-  $num_bids = 3;
-  $end_date = new DateTime('2020-11-02T00:00:00');
-  
-  //print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+
 
   $servername = "localhost";
   $username = "root";
@@ -141,7 +131,18 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
- $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item ORDER BY item_id";
+$sql_total = "SELECT * FROM item";
+$rs_result = $conn->query($sql_total);
+$num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
+$results_per_page = 4;
+$max_page = ceil($num_results / $results_per_page);
+
+
+$page = $_GET["page"] ?? 1;;
+$start_from = ($page-1) * $results_per_page;
+
+ $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
+                                                            LIMIT $start_from,$results_per_page";
  $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -158,7 +159,6 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 results";
 }
-$conn->close();
 ?>
 
 </ul>
@@ -219,6 +219,9 @@ $conn->close();
       </a>
     </li>');
   }
+
+$conn->close();
+
 ?>
 
   </ul>
@@ -226,7 +229,6 @@ $conn->close();
 
 
 </div>
-
 
 
 <?php include_once("footer.php")?>
