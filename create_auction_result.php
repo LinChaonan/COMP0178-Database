@@ -18,14 +18,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $SPrice = $_POST["auctionStartPrice"];
         $RPrice = $_POST["auctionReservePrice"];
         $Date = $_POST["auctionEndDate"];
-        echo $title, $details, $SPrice, $RPrice, $Date;
+        $seller_id = $_SESSION['userID'];
+
+        echo $title, $details, $SPrice, $RPrice, $Date, $seller_id;
 
         if (!$link) {
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $sql = "INSERT INTO item (title,description, start_price, reserve_price, end_date, seller_id,category,status)
-VALUES ('$title','$details','$SPrice','$RPrice','$Date','1','earphone','0')";
+        $sql = "INSERT INTO item (title,description, start_price, reserve_price, 
+                                    end_date, seller_id,category,status)
+VALUES ('$title','$details','$SPrice','$RPrice','$Date','$seller_id','earphone','0')";
 
         if (mysqli_query($link, $sql)) {
             echo "新记录插入成功";
@@ -55,7 +58,7 @@ VALUES ('$title','$details','$SPrice','$RPrice','$Date','1','earphone','0')";
 
 
 // If all is successful, let user know.
-echo('<div class="text-center">Auction successfully created! <a href="FIXME">View your new listing.</a></div>');
+echo('<div class="text-center">Auction successfully created! <a href ="mylistings.php">View your new listing.</a></div>');
 
 
 ?>
