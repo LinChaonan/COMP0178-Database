@@ -7,8 +7,6 @@ require_once "config.php";
 // For now, I will just set session variables and redirect.
 
 session_start();
-//$_SESSION['logged_in'] = true;
-//$_SESSION['account_type'] = "buyer";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
