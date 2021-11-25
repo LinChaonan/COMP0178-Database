@@ -8,32 +8,10 @@ require_once "config.php";
 
 // For now, I will just set session variables and redirect.
 
-session_start();
-
-//$_SESSION['account_type'] = "buyer";
-
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-    $email = $_POST["email"];
-    $pwd = $_POST["password"];
-
-    echo $email, $pwd;
-
-    if (!$link) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-
-    $sql = "INSERT INTO user (email, password) 
-  			  VALUES('$email', '$pwd')";
-
-}
-
-/*
-require_once "config.php";
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 
-
+    /*
     $email= $password = $passwordConfirmation = "";
     $email_err = $password_err = $passwordConfirmation_err = "";
 
@@ -64,20 +42,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             $passwordConfirmation_err = "Password did not match.";
         }
     }
-
-
-
+    */
     $email = trim($_POST["email"]);
     $password = trim($_POST["password"]);
-    echo $email, $password;
+    $account_type = $_POST["accountType"];
 
-    $sql = "INSERT INTO user (email, password) 
-  			  VALUES('$email', '$password')";
 
-    $_SESSION['email'] = $email;
-    $_SESSION['success'] = "You are now logged in";
-    header('location: browse.php');
+
+    $conn = mysqli_connect("localhost", "root", "root", "auction_system");
+    if($conn){
+        echo "Successful";
+    }
+    else{
+        echo "Failed";
+    }
+
+
+    if(empty($email_err) && empty($password_err) && empty($passwordConfirmation_err)) {
+        $sql = "INSERT INTO user (email, password, account_type)
+VALUES ('$email','$password', '$account_type')";
+    }
+
+    if (mysqli_query($link, $sql)) {
+        echo "Registration Successful";
+    }
 
 }
 
-*/
+?>
