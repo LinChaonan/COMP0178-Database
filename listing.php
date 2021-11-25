@@ -5,9 +5,7 @@
    require_once "config.php";
 
    $item_id = $_GET['item_id'];
-   echo $item_id;
    $_SESSION['item_id']= $item_id;
-   echo $_SESSION['item_id'];
 
    $sql = "SELECT * FROM item WHERE (item_id='$item_id')";
    //执行上面的sql语句并将结果集赋给result。
