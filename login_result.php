@@ -24,9 +24,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if ($result->num_rows > 0) {
         echo "matched";
         $row = $result->fetch_assoc();
+        $accountType = $row["account_type"];
         $_SESSION['logged_in'] = true;
-        $_SESSION['account_type'] = "seller";
         $_SESSION['userID'] = $row["user_id"];
+        $_SESSION['account_type'] = $accountType;
         echo $_SESSION['userID'];
         echo('<div class="text-center">You are now logged in! You will be redirected shortly.</div>');
 
