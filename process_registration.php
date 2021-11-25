@@ -43,25 +43,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     */
+
     $email = trim($_POST["email"]);
     $password = trim($_POST["password"]);
+    $repeat_password = trim($_POST["repeat_password"]);
     $account_type = $_POST["accountType"];
+    $errors = array();
 
-
-
-    $conn = mysqli_connect("localhost", "root", "root", "auction_system");
-    if($conn){
-        echo "Successful";
-    }
-    else{
-        echo "Failed";
+    if (!isset($_POST['repeat_password'], $_POST['password'], $_POST['email'])) {
+        exit('Please complete the registration form!');
     }
 
+    if (empty($_POST['repeat_password']) || empty($_POST['password']) || empty($_POST['email'])) {
+        exit('Please complete the registration form!');
+    }
 
-    if(empty($email_err) && empty($password_err) && empty($passwordConfirmation_err)) {
-        $sql = "INSERT INTO user (email, password, account_type)
+    $sql = "INSERT INTO user (email, password, account_type)
 VALUES ('$email','$password', '$account_type')";
-    }
 
     if (mysqli_query($link, $sql)) {
         echo "Registration Successful";
