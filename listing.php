@@ -1,18 +1,27 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
-
+<?php session_start(); ?>
 <?php
+   require_once "config.php";
+
+   $item_id = $_GET['item_id'];
+   $_SESSION['item_id']= $item_id;
+
+   $sql = "SELECT * FROM item WHERE (item_id='$item_id')";
+   //执行上面的sql语句并将结果集赋给result。
+   $result = $link->query($sql);
+   $row = $result->fetch_assoc();
   // Get info from the URL:
-  $item_id = $_GET['item_id'];
-
   // TODO: Use item_id to make a query to the database.
-
   // DELETEME: For now, using placeholder data.
-  $title = "Placeholder title";
-  $description = "Description blah blah blah";
-  $current_price = 30.50;
-  $num_bids = 1;
-  $end_time = new DateTime('2020-11-02T00:00:00');
+  $title = $row["title"];
+  $description = $row["description"];
+  $current_price = $row["current_price"];
+  $num_bids = $row["num_bids"];
+  try {
+    $end_time = new DateTime($row["end_date"]);
+  } catch (Exception $e) {
+  }
 
   // TODO: Note: Auctions that have ended may pull a different set of data,
   //       like whether the auction ended in a sale or was cancelled due
@@ -31,6 +40,8 @@
   //       For now, this is hardcoded.
   $has_session = true;
   $watching = false;
+
+
 ?>
 
 
@@ -82,7 +93,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text">£</span>
         </div>
-	    <input type="number" class="form-control" id="bid">
+	    <input name="bid" type="number" class="form-control" id="bid">
       </div>
       <button type="submit" class="btn btn-primary form-control">Place bid</button>
     </form>
@@ -167,3 +178,5 @@ function removeFromWatchlist(button) {
 
 } // End of addToWatchlist func
 </script>
+
+    <?php $link->close();?>
