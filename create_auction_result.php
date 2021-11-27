@@ -13,8 +13,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $title = $_POST["auctionTitle"];
         $details = $_POST["auctionDetails"];
-        $category = "earphone";
-        $seller = "1";
+        $category = $_POST["category"];
         $SPrice = $_POST["auctionStartPrice"];
         $RPrice = $_POST["auctionReservePrice"];
         $Date = $_POST["auctionEndDate"];
@@ -28,7 +27,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $sql = "INSERT INTO item (title,description, start_price, reserve_price, 
                                     end_date, seller_id,category,status)
-VALUES ('$title','$details','$SPrice','$RPrice','$Date','$seller_id','earphone','0')";
+VALUES ('$title','$details','$SPrice','$RPrice','$Date','$seller_id','$category','0')";
 
         if (mysqli_query($link, $sql)) {
             echo "新记录插入成功";

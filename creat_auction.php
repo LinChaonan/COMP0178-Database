@@ -42,11 +42,14 @@
                         <div class="form-group row">
                             <label for="auctionCategory" class="col-sm-2 col-form-label text-right">Category</label>
                             <div class="col-sm-10">
-                                <select class="form-control" id="auctionCategory">
+                                <select class="form-control" id="auctionCategory" name="category">
                                     <option selected>Choose...</option>
-                                    <option value="fill">Fill me in (category1) </option>
-                                    <option value="with">with options (category2) </option>
-                                    <option value="populated">populated from a database? (category3) </option>
+                                    <option value="jewellery">Jewellery </option>
+                                    <option value="art_works">Art Works </option>
+                                    <option value="electronics">Electronics </option>
+                                    <option value="books">Books </option>
+                                    <option value="homes">Homes </option>
+
                                 </select>
                                 <small id="categoryHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Select a category for this item.</small>
                             </div>
