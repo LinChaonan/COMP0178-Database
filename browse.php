@@ -29,9 +29,11 @@
         <label for="cat" class="sr-only">Search within:</label>
         <select class="form-control" name="cat" id="cat">
           <option selected value="all">All categories</option>
-          <option value="fill">Fill me in</option>
-          <option value="with">with options</option>
-          <option value="populated">populated from a database?</option>
+          <option value="jewellery">Jewellery </option>
+          <option value="art_works">Art Works </option>
+          <option value="electronics">Electronics </option>
+          <option value="books">Books </option>
+          <option value="homes">Homes </option>
         </select>
       </div>
     </div>
@@ -87,8 +89,6 @@ $start_from = ($page-1) * $results_per_page;
   }
   else {
       $keyword = $_GET['keyword'];
-      echo $keyword;
-
   }
 
   if (!isset($_GET['cat'])) {
@@ -111,29 +111,60 @@ $start_from = ($page-1) * $results_per_page;
       $ordering = $_GET['order_by'];
       if ($ordering == "date")
       {
+          if ($category == 'all') {
+              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')
+                                                            ORDER BY end_date DESC
+                                                            LIMIT $start_from,$results_per_page";
+              $result = $conn->query($sql);
+          }
+          else {
+              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
+                                                            ORDER BY end_date DESC
+                                                            LIMIT $start_from,$results_per_page";
+              $result = $conn->query($sql);
+          }
 
-          $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
-                                                            WHERE status = '0' ORDER BY end_date DESC
-                                                            LIMIT $start_from,$results_per_page" ;
-          $result = $conn->query($sql);
-          $num_results = mysqli_num_rows($result);
-          $max_page = ceil($num_results / $results_per_page);
       }
       elseif ($ordering == "pricelow")
       {
-
-          $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+          if ($category == 'all') {
+              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
                                                             ORDER BY current_price
-                                                            LIMIT $start_from,$results_per_page" ;
-          $result = $conn->query($sql);
+                                                            LIMIT $start_from,$results_per_page";
+              $result = $conn->query($sql);
+
+          }
+          else {
+              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
+                                                            ORDER BY current_price
+                                                            LIMIT $start_from,$results_per_page";
+              $result = $conn->query($sql);
+
+          }
       }
       elseif ($ordering == "pricehigh")
       {
 
-          $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+          if ($category == 'all') {
+              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
                                                             ORDER BY current_price DESC
-                                                            LIMIT $start_from,$results_per_page" ;
-          $result = $conn->query($sql);
+                                                            LIMIT $start_from,$results_per_page";
+              $result = $conn->query($sql);
+
+          }
+          else {
+              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
+                                                            ORDER BY current_price DESC
+                                                            LIMIT $start_from,$results_per_page";
+              $result = $conn->query($sql);
+
+          }
       }
   }
   

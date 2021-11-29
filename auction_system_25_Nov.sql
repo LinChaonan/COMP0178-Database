@@ -106,11 +106,10 @@ INSERT INTO `item` (`item_id`, `seller_id`, `category`, `status`, `title`, `desc
 (10, 1, 'earphone', '0', 'Polishing Cloth', '', 1, '19', '5', NULL, 0, NULL, NULL, '2021-11-12 15:29:00.000000'),
 (11, 1, 'earphone', '0', 'AirTag', '', 1, '29', '10', NULL, 0, NULL, NULL, '2021-11-05 15:29:00.000000'),
 (12, 1, 'earphone', '0', 'Beats Flex', 'All Day Wireless Earphones', 1, '59', '20', NULL, 0, NULL, NULL, '2021-11-19 15:32:00.000000'),
-(13, 1, 'earphone', '0', 'YITING CAO', 'Come from China', 1, '200', '50', NULL, 0, NULL, NULL, '2021-11-28 15:18:00.000000'),
-(14, 1, 'earphone', '0', 'YY', '', 1, '', '', NULL, 0, NULL, NULL, '2021-11-05 15:43:00.000000'),
-(15, 1, 'earphone', '0', 'ZZ', 'ZZZ', 1, '20', '200', NULL, 0, NULL, NULL, '2021-11-12 15:59:00.000000'),
-(16, 5, 'earphone', '0', 'MM', 'as', 1, '20', '200', NULL, 0, NULL, NULL, '2021-11-12 15:59:00.000000'),
-(17, 5, 'earphone', '0', 'KK', 'ss', 1, '20', '200', NULL, 0, NULL, NULL, '2021-11-10 16:14:00.000000');
+(13, 1, 'earphone', '0', 'YY', '', 1, '', '', NULL, 0, NULL, NULL, '2021-11-05 15:43:00.000000'),
+(14, 1, 'earphone', '0', 'ZZ', 'ZZZ', 1, '20', '200', NULL, 0, NULL, NULL, '2021-11-12 15:59:00.000000'),
+(15, 5, 'earphone', '0', 'MM', 'as', 1, '20', '200', NULL, 0, NULL, NULL, '2021-11-12 15:59:00.000000'),
+(16, 5, 'earphone', '0', 'KK', 'ss', 1, '20', '200', NULL, 0, NULL, NULL, '2021-11-10 16:14:00.000000');
 
 -- --------------------------------------------------------
 
