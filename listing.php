@@ -18,6 +18,11 @@
   $description = $row["description"];
   $current_price = $row["current_price"];
   $num_bids = $row["num_bids"];
+
+  $_SESSION['currentPrice'] = $current_price;
+
+  $user_id = $_SESSION['userID'];
+
   try {
     $end_time = new DateTime($row["end_date"]);
   } catch (Exception $e) {
@@ -38,9 +43,19 @@
   // TODO: If the user has a session, use it to make a query to the database
   //       to determine if the user is already watching this item.
   //       For now, this is hardcoded.
-  $has_session = true;
-  $watching = false;
 
+    $watch = "SELECT * FROM watch_list WHERE user_id='$user_id' and item_id='$item_id'";
+
+    $result = mysqli_query($link, $watch);
+
+    if ($result->num_rows > 0) {
+                        $watching = true;
+    }
+    else {
+                        $watching = false;
+    }
+
+  $has_session = true;
 
 ?>
 
