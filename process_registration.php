@@ -2,7 +2,8 @@
 <?php
 
 include_once("register.php");
-require_once "config.php";
+require_once("config.php");
+require_once("send_mail.php");
 // TODO: Extract $_POST variables, check they're OK, and attempt to login.
 // Notify user of success/failure and redirect/give navigation options.
 
@@ -42,6 +43,9 @@ VALUES ('$email','$password', '$account_type')";
 
     if (mysqli_query($link, $sql)) {
         echo "Registration Successful";
+        $subject = "New custom";
+        $body = "Welcome to Simple Click!";
+        send_email($email, $subject, $body);
     }
 
 }
