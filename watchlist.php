@@ -34,6 +34,7 @@
 
             $id = $_SESSION['userID'];
 
+
             $sql_total = "SELECT * FROM watch_list ";
             $rs_result = $conn->query($sql_total);
             $num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
@@ -44,10 +45,18 @@
             $page = $_GET["page"] ?? 1;;
             $start_from = ($page-1) * $results_per_page;
 
-            $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
-                                                            WHERE seller_id = '$id'
-                                                            LIMIT $start_from,$results_per_page";
-            $result = $conn->query($sql);
+            $mysql= "SELECT a.user_id, a.item_id, b.item_id, b.title, b.description, 
+            b.current_price, b.num_bids, b.end_date FROM watch_list a INNER JOIN item b 
+                        ON (a.item_id = b.item_id) AND (a.user_id = '$id')";
+
+
+
+
+//            $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+//                                                            WHERE seller_id = '$id'
+//                                                            LIMIT $start_from,$results_per_page";
+
+            $result = $conn->query($mysql);
 
             if ($result->num_rows > 0) {
                 // output data of each row
@@ -57,9 +66,12 @@
                     $description = $row["description"];
                     $current_price = $row["current_price"];
                     $num_bids = $row["num_bids"];
-                    $end_date = $row["end_date"];
+                    try {
+                        $end_time = new DateTime($row["end_date"]);
+                    } catch (Exception $e) {
+                    }
                     $item_id = $row["item_id"];
-                    print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+                    print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_time);
                 }
             } else {
                 echo "0 results";
