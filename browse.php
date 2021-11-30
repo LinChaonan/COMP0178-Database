@@ -75,6 +75,7 @@ $rs_result = $conn->query($sql_total);
 $num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
 $results_per_page = 4;
 $max_page = ceil($num_results / $results_per_page);
+echo '|', $num_results, '-', $max_page;
 
 
 $page = $_GET["page"] ?? 1;;
@@ -124,11 +125,13 @@ $start_from = ($page-1) * $results_per_page;
                                                             ORDER BY end_date DESC
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
+
           }
 
       }
       elseif ($ordering == "pricelow")
       {
+
           if ($category == 'all') {
               $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
                       WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
@@ -143,8 +146,14 @@ $start_from = ($page-1) * $results_per_page;
                                                             ORDER BY current_price
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
+              /*
+              $num_results = mysqli_num_rows($result);
+              $max_page = ceil($num_results / $results_per_page);
+              echo '|', $num_results, '-', $max_page;
+              */
 
           }
+
       }
       elseif ($ordering == "pricehigh")
       {
@@ -167,6 +176,7 @@ $start_from = ($page-1) * $results_per_page;
           }
       }
   }
+
   
   if (!isset($_GET['page'])) {
     $curr_page = 1;
