@@ -73,9 +73,8 @@ if ($conn->connect_error) {
 $sql_total = "SELECT * FROM item";
 $rs_result = $conn->query($sql_total);
 $num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
-$results_per_page = 4;
+$results_per_page = 6;
 $max_page = ceil($num_results / $results_per_page);
-echo '|', $num_results, '-', $max_page;
 
 
 $page = $_GET["page"] ?? 1;;
@@ -87,6 +86,8 @@ $start_from = ($page-1) * $results_per_page;
       $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             LIMIT $start_from,$results_per_page";
       $result = $conn->query($sql);
+
+
   }
   else {
       $keyword = $_GET['keyword'];
@@ -97,6 +98,7 @@ $start_from = ($page-1) * $results_per_page;
       $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             LIMIT $start_from,$results_per_page";
       $result = $conn->query($sql);
+
   }
   else {
       $category = $_GET['cat'];
@@ -118,6 +120,11 @@ $start_from = ($page-1) * $results_per_page;
                                                             ORDER BY end_date DESC
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
+              $data = "SELECT * FROM item WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')";
+              $data_result = $conn ->query($data);
+              $num_results = mysqli_num_rows($data_result);
+              $max_page = ceil($num_results / $results_per_page);
+
           }
           else {
               $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
@@ -125,6 +132,10 @@ $start_from = ($page-1) * $results_per_page;
                                                             ORDER BY end_date DESC
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
+              $data = "SELECT * FROM item WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
+              $data_result = $conn ->query($data);
+              $num_results = mysqli_num_rows($data_result);
+              $max_page = ceil($num_results / $results_per_page);
 
           }
 
@@ -138,6 +149,10 @@ $start_from = ($page-1) * $results_per_page;
                                                             ORDER BY current_price
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
+              $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
+              $data_result = $conn ->query($data);
+              $num_results = mysqli_num_rows($data_result);
+              $max_page = ceil($num_results / $results_per_page);
 
           }
           else {
@@ -146,11 +161,10 @@ $start_from = ($page-1) * $results_per_page;
                                                             ORDER BY current_price
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
-              /*
-              $num_results = mysqli_num_rows($result);
+              $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
+              $data_result = $conn ->query($data);
+              $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
-              echo '|', $num_results, '-', $max_page;
-              */
 
           }
 
@@ -164,6 +178,10 @@ $start_from = ($page-1) * $results_per_page;
                                                             ORDER BY current_price DESC
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
+              $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
+              $data_result = $conn ->query($data);
+              $num_results = mysqli_num_rows($data_result);
+              $max_page = ceil($num_results / $results_per_page);
 
           }
           else {
@@ -172,6 +190,10 @@ $start_from = ($page-1) * $results_per_page;
                                                             ORDER BY current_price DESC
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
+              $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
+              $data_result = $conn ->query($data);
+              $num_results = mysqli_num_rows($data_result);
+              $max_page = ceil($num_results / $results_per_page);
 
           }
       }
@@ -206,6 +228,8 @@ $start_from = ($page-1) * $results_per_page;
 <?php
 
 if ($result->num_rows > 0) {
+
+
     // output data of each row
     while($row = $result->fetch_assoc()) {
         $list_id = $row["item_id"];
