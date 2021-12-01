@@ -81,14 +81,9 @@ if ($result->num_rows > 0) {
         $id = $row["item_id"];
         if ($now > $end_time) {
             $check = "UPDATE item SET status = '1' WHERE item_id = '$id'";
-            if (mysqli_query($conn,$check)) {
-                echo "数据更新成功";
-            } else {
-                echo "Error: " . $check . "<br>" . mysqli_error($conn);
+            mysqli_query($conn,$check);
             }
         }
-
-    }
 } else {
     echo "0 results";
 }
