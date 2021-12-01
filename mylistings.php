@@ -43,7 +43,7 @@
 
             $id = $_SESSION['userID'];
 
-            $sql_total = "SELECT * FROM item ";
+            $sql_total = "SELECT * FROM item WHERE seller_id = '$id' ";
             $rs_result = $conn->query($sql_total);
             $num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
             $results_per_page = 4;
