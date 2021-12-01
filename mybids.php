@@ -54,7 +54,7 @@
             $start_from = ($page-1) * $results_per_page;
 
             $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
-                                                            WHERE seller_id = '$id'
+                                                            WHERE buyer_id = '$id'
                                                             LIMIT $start_from,$results_per_page";
             $result = $conn->query($sql);
 
@@ -99,7 +99,7 @@
                 if ($curr_page != 1) {
                     echo('
     <li class="page-item">
-      <a class="page-link" href="mylistings.php?' . $querystring . 'page=' . ($curr_page - 1) . '" aria-label="Previous">
+      <a class="page-link" href="mybids.php?' . $querystring . 'page=' . ($curr_page - 1) . '" aria-label="Previous">
         <span aria-hidden="true"><i class="fa fa-arrow-left"></i></span>
         <span class="sr-only">Previous</span>
       </a>
@@ -120,14 +120,14 @@
 
                     // Do this in any case
                     echo('
-      <a class="page-link" href="mylistings.php?' . $querystring . 'page=' . $i . '">' . $i . '</a>
+      <a class="page-link" href="mybids.php?' . $querystring . 'page=' . $i . '">' . $i . '</a>
     </li>');
                 }
 
                 if ($curr_page != $max_page) {
                     echo('
     <li class="page-item">
-      <a class="page-link" href="mylistings.php?' . $querystring . 'page=' . ($curr_page + 1) . '" aria-label="Next">
+      <a class="page-link" href="mybids.php?' . $querystring . 'page=' . ($curr_page + 1) . '" aria-label="Next">
         <span aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
         <span class="sr-only">Next</span>
       </a>

@@ -63,7 +63,6 @@ $username = "root";
 $password = "root";
 $dbname = "auction_system";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
