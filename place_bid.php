@@ -36,19 +36,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo "Error: " . $history . "<br>" . mysqli_error($link);
         }
 
-        $sqli = "SELECT u.email
-                 FROM historical_auction_price AS h Left JOIN user AS u ON u.user_id = h.user_id
-                 WHERE h.item_id = '$itemID'";
-
-        $result = $link->query($sqli);
+        // Get the email addresses of historical bidders.
+        $sql_email = "SELECT u.email
+                      FROM historical_auction_price AS h Left JOIN user AS u ON u.user_id = h.user_id
+                      WHERE h.item_id = '$itemID'";
+        $result = $link->query($sql_email);
         if ($result->num_rows >0) {
             while ($row=$result->fetch_assoc()) {
-                $email=$row["email"];
                 // for each user, get their emails, and send this to them
-                $subject = "New bid";
-                $body = "Price update!";
+                $email=$row["email"];
+                // Email title
+                $subject = "Auction Situation Update";
+                //Mail body
+                $body = "Dear customer: <br/>We are sorry to inform you that you are outbid. <br/>The price is £".$bid." now. <br/>Please make a new bid!";
                 send_email($email, $subject, $body);
-                echo "email success";
 
             }
         }
