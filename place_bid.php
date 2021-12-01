@@ -15,7 +15,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $bid = $_POST["bid"];
     if ($bid>$currentPrice) {
 
-        $sql = "UPDATE item SET current_price = '$bid', buyer_id = '$userID' WHERE item_id='$itemID'";
+        $sql = "UPDATE item SET current_price = '$bid', buyer_id = '$userID',
+            num_bids=num_bids+1 WHERE item_id='$itemID'";
 
         if (mysqli_query($link, $sql)) {
             echo "The new record is successfully inserted.";
