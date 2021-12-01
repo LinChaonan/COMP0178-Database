@@ -19,7 +19,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $Date = $_POST["auctionEndDate"];
         $seller_id = $_SESSION['userID'];
 
-        echo $title, $details, $SPrice, $RPrice, $Date, $seller_id;
+        try {
+            $end_time = new DateTime($Date);
+        } catch (Exception $e) {
+        }
+        $now = new DateTime();
+
+        if (empty($title) || empty($category) || empty($SPrice) || empty($Date))
+        {
+            exit('Please complete the create auction form!');
+        }
+
+        if ($SPrice < 1){
+            exit('The minimum starting price is 1');
+        }
+
+        if (!empty($RPrice) && ($RPrice < $SPrice)) {
+            exit('The reserve price cannot be lower than the starting price');
+        }
+
+        if ($end_time < $now) {
+            exit('The end date must be in the future');
+        }
+
 
         if (!$link) {
             die("Connection failed: " . mysqli_connect_error());
@@ -27,10 +49,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $sql = "INSERT INTO item (title,description, start_price, reserve_price, 
                                     end_date, seller_id,category,status)
-VALUES ('$title','$details','$SPrice','$RPrice','$Date','$seller_id','$category','0')";
+                VALUES ('$title','$details','$SPrice','$RPrice','$Date','$seller_id','$category','0')";
 
         if (mysqli_query($link, $sql)) {
-            echo "新记录插入成功";
+            echo "New auction successfully added";
         } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }
