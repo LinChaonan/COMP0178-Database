@@ -54,6 +54,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
 
+        // Get the user email addresses on watch list.
+        $sql_watch_email = "SELECT u.email
+                            FROM watch_list AS w Left JOIN user AS u ON u.user_id = w.user_id
+                            WHERE w.item_id = '$itemID'";
+        $result = $link->query($sql_email);
+        if ($result->num_rows >0) {
+            while ($row=$result->fetch_assoc()) {
+                // for each user, get their emails, and send this to them
+                $email=$row["email"];
+                // Email title
+                $subject = "Auction Situation Update";
+                //Mail body
+                $body = "Dear customer: <br/> The price is £".$bid." now.";
+                send_email($email, $subject, $body);
+
+            }
+        }
+
         mysqli_close($link);
     }
     else{
