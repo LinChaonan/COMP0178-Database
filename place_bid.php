@@ -23,8 +23,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }
 
-        $history = "INSERT INTO historical_auction_price (item_id, user_id, bid_price)
-                    VALUES ('$itemID','$userID','$bid')";
+        $history = "INSERT INTO historical_auction_price (item_id, user_id, bid_price,bid_time)
+                    VALUES ('$itemID','$userID','$bid',now())";
 
 
         if (mysqli_query($link, $history)) {
