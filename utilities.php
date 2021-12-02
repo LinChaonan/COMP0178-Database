@@ -62,4 +62,14 @@ function print_listing_li($item_id, $title, $desc, $price, $num_bids, $end_time)
   );
 }
 
+function process_str($str)
+{
+    $str = substr($str, 0, -1);
+    //echo $str;
+    $str_arr = explode (",", $str);
+    $str_arr = array_unique($str_arr);
+    // echo $str_arr;
+    return $str_arr;
+}
+
 ?>
