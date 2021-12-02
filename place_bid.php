@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             num_bids=num_bids+1 WHERE item_id='$itemID'";
 
         if (mysqli_query($link, $sql)) {
-            echo "The new record is successfully inserted.";
+        //  echo "<script>alert('The new record is successfully inserted.')</script>";
         } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }
@@ -29,9 +29,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
         if (mysqli_query($link, $history)) {
-            echo "Historical records are inserted successfully.";
-            echo('<div class="text-center">Your bid are now placed successfully! You will be redirected shortly.</div>');
-            header("refresh:3;url=browse.php");
+            echo('<script>alert("Your bid are now placed successfully! You will be redirected shortly.")</script>');
+            header("refresh:0;url=browse.php");
         } else {
             echo "Error: " . $history . "<br>" . mysqli_error($link);
         }
