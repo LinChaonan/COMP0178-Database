@@ -54,7 +54,7 @@
                         $watching = false;
     }
 
-    $his = "SELECT * FROM historical_auction_price WHERE (item_id='$item_id')";
+    $his = "SELECT * FROM historical_auction_price WHERE (item_id='$item_id') ORDER BY auction_id DESC";
     $his_result = $link->query($his);
 
   $has_session = true;
@@ -100,9 +100,9 @@
 <?php if ($now > $end_time): ?>
      This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
      <!-- TODO: Print the result of the auction here? -->
-<?php else: ?>
+<?php elseif ($_SESSION['account_type'] == 'buyer'): ?>
      Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>  
-    <p class="lead">Current bid: £<?php echo(number_format($current_price, 2)) ?></p>
+    <p class="lead">Current bid: £<?php echo(number_format($current_price, 0)) ?></p>
 
     <!-- Bidding form -->
     <form method="POST" action="place_bid.php">
@@ -136,7 +136,7 @@
                 $dbName = 'auction_system';  // 使用的数据库
                 $user = 'root';  //数据库连接用户名
                 $pass = 'root'; //对应的密码
-                $size = ' width="600" height="500"';
+                $size = ' width="700" height="700"';
 
                 $dsn = "mysql:host = $host;dbname=$dbName";
                 $pdo = new PDO($dsn,$user,$pass);
@@ -164,7 +164,7 @@
                 <?php if ($his_result->num_rows > 0) {
                     // output data of each row
                     while($his_row = $his_result->fetch_assoc()) {
-                        echo "Price: " . $his_row["bid_price"]. " - Time: " . $his_row["bid_time"]. "<br>";
+                        echo "Historical Bid: ￡" . $his_row["bid_price"]. "<br>". "  Bid Time: " . $his_row["bid_time"]. "<br>"."<br>";
                     }
                 } else {
                     echo "No historical price";
