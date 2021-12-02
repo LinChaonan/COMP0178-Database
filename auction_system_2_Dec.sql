@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- 主机： localhost:8889
--- 生成日期： 2021-12-02 14:45:50
+-- 生成日期： 2021-12-02 16:29:51
 -- 服务器版本： 5.7.34
 -- PHP 版本： 7.4.21
 
@@ -94,6 +94,65 @@ INSERT INTO `historical_auction_price` (`auction_id`, `item_id`, `user_id`, `bid
 (13, 5, 7, '2', '2021-12-01 18:29:42.000000'),
 (14, 6, 6, '300', '2021-12-01 18:30:46.000000'),
 (15, 7, 5, '901', '2021-12-01 18:32:37.000000');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `image`
+--
+
+CREATE TABLE `image` (
+  `id` int(4) UNSIGNED NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `path` varchar(100) DEFAULT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `image`
+--
+
+INSERT INTO `image` (`id`, `name`, `path`, `time`) VALUES
+(1, '1.png', './images/1.png', '2021-12-02 14:57:12'),
+(2, '2.png', './images/2.png', '2021-12-02 14:59:22'),
+(3, '3.png', './images/3.png', '2021-12-02 15:00:32'),
+(4, '4.png', './images/4.png', '2021-12-02 15:30:16'),
+(5, '5.png', './images/5.png', '2021-12-02 16:22:06'),
+(6, '6.png', './images/6.png', '2021-12-02 16:22:06'),
+(7, '7.png', './images/7.png', '2021-12-02 16:22:06'),
+(8, '8.png', './images/8.png', '2021-12-02 16:22:06'),
+(9, '9.png', './images/9.png', '2021-12-02 16:22:06'),
+(10, '10.png', './images/10.png', '2021-12-02 16:22:06'),
+(11, '11.png', './images/11.png', '2021-12-02 16:22:06'),
+(12, '12.png', './images/12.png', '2021-12-02 16:22:06'),
+(13, '13.png', './images/13.png', '2021-12-02 16:22:06'),
+(14, '14.png', './images/14.png', '2021-12-02 16:22:06'),
+(15, '15.png', './images/15.png', '2021-12-02 16:22:06'),
+(16, '16.png', './images/16.png', '2021-12-02 16:22:06'),
+(17, '17.png', './images/17.png', '2021-12-02 16:22:06'),
+(18, '18.png', './images/18.png', '2021-12-02 16:22:06'),
+(19, '19.png', './images/19.png', '2021-12-02 16:22:06'),
+(20, '20.png', './images/20.png', '2021-12-02 16:22:06'),
+(21, '21.png', './images/21.png', '2021-12-02 16:22:06'),
+(22, '22.png', './images/22.png', '2021-12-02 16:22:06'),
+(23, '23.png', './images/23.png', '2021-12-02 16:22:06'),
+(24, '24.png', './images/24.png', '2021-12-02 16:22:06'),
+(25, '25.png', './images/25.png', '2021-12-02 16:22:06'),
+(26, '26.png', './images/26.png', '2021-12-02 16:22:06'),
+(27, '27.png', './images/27.png', '2021-12-02 16:22:06'),
+(28, '28.png', './images/28.png', '2021-12-02 16:22:06'),
+(29, '29.png', './images/29.png', '2021-12-02 16:22:06'),
+(30, '30.png', './images/30.png', '2021-12-02 16:22:06'),
+(31, '31.png', './images/31.png', '2021-12-02 16:22:06'),
+(32, '32.png', './images/32.png', '2021-12-02 16:22:06'),
+(33, '33.png', './images/33.png', '2021-12-02 16:22:06'),
+(34, '34.png', './images/34.png', '2021-12-02 16:22:06'),
+(35, '35.png', './images/35.png', '2021-12-02 16:22:06'),
+(36, '36.png', './images/36.png', '2021-12-02 16:22:06'),
+(37, '37.png', './images/37.png', '2021-12-02 16:22:06'),
+(38, '38.png', './images/38.png', '2021-12-02 16:22:06'),
+(39, '39.png', './images/39.png', '2021-12-02 16:22:06'),
+(40, '40.png', './images/40.png', '2021-12-02 16:22:06');
 
 -- --------------------------------------------------------
 
@@ -252,6 +311,12 @@ ALTER TABLE `historical_auction_price`
   ADD PRIMARY KEY (`auction_id`);
 
 --
+-- 表的索引 `image`
+--
+ALTER TABLE `image`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- 表的索引 `item`
 --
 ALTER TABLE `item`
@@ -298,6 +363,12 @@ ALTER TABLE `buyer`
 --
 ALTER TABLE `historical_auction_price`
   MODIFY `auction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- 使用表AUTO_INCREMENT `image`
+--
+ALTER TABLE `image`
+  MODIFY `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- 使用表AUTO_INCREMENT `item`
