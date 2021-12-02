@@ -55,6 +55,9 @@
                         $watching = false;
     }
 
+    $his = "SELECT * FROM historical_auction_price WHERE (item_id='$item_id')";
+    $his_result = $link->query($his);
+
   $has_session = true;
 
 ?>
@@ -118,6 +121,35 @@
   </div> <!-- End of right col with bidding info -->
 
 </div> <!-- End of row #2 -->
+
+
+
+<div class="row"> <!-- Row #3 with pic + historical price -->
+        <div class="col-sm-8"> <!-- Left col with pic -->
+
+            <div class="itemDescription">
+                <?php echo 'Pic Position'; ?>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4"> <!-- Right col with historical price -->
+
+            <div class="itemDescription">
+                <?php if ($his_result->num_rows > 0) {
+                    // output data of each row
+                    while($his_row = $his_result->fetch_assoc()) {
+                        echo "Price: " . $his_row["bid_price"]. " - Time: " . $his_row["bid_time"]. "<br>";
+                    }
+                } else {
+                    echo "No historical price";
+                } ?>
+            </div>
+
+        </div> <!-- End of right col with historical price -->
+
+    </div> <!-- End of row #3 -->
+
 
 
 

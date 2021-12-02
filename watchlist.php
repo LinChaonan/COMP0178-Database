@@ -1,6 +1,49 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
 
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "auction_system";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$id = $_SESSION['userID'];
+
+$sql_total = "SELECT * FROM watch_list WHERE user_id = '$id' ";
+$rs_result = $conn->query($sql_total);
+$num_results = mysqli_num_rows($rs_result);
+$results_per_page = 4;
+$max_page = ceil($num_results / $results_per_page);
+
+
+$page = $_GET["page"] ?? 1;;
+$start_from = ($page-1) * $results_per_page;
+
+$page = $_GET["page"] ?? 1;;
+$start_from = ($page-1) * $results_per_page;
+
+$mysql= "SELECT b.item_id, b.title, b.description, b.current_price, b.num_bids, b.end_date 
+                        FROM watch_list AS a LEFT JOIN item AS b ON a.item_id = b.item_id
+                        WHERE a.user_id ='$id'LIMIT $start_from,$results_per_page";
+$result = $conn->query($mysql);
+
+if (!isset($_GET['page'])) {
+    $curr_page = 1;
+}
+else {
+    $curr_page = $_GET['page'];
+}
+
+
+?>
+
     <div class="container mt-5">
 
         <!-- TODO: If result set is empty, print an informative message. Otherwise... -->
@@ -11,52 +54,6 @@
                  retrieved from the query -->
 
             <?php
-
-
-            if (!isset($_GET['page'])) {
-                $curr_page = 1;
-            }
-            else {
-                $curr_page = $_GET['page'];
-            }
-
-            $servername = "localhost";
-            $username = "root";
-            $password = "root";
-            $dbname = "auction_system";
-
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $id = $_SESSION['userID'];
-
-
-            $sql_total = "SELECT * FROM watch_list ";
-            $rs_result = $conn->query($sql_total);
-            $num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
-            $results_per_page = 4;
-            $max_page = ceil($num_results / $results_per_page);
-
-
-            $page = $_GET["page"] ?? 1;;
-            $start_from = ($page-1) * $results_per_page;
-
-            $mysql= "SELECT a.user_id, a.item_id, b.item_id, b.title, b.description, 
-            b.current_price, b.num_bids, b.end_date FROM watch_list a INNER JOIN item b 
-                        ON (a.item_id = b.item_id) AND (a.user_id = '$id')";
-
-
-
-
-//            $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
-//                                                            WHERE seller_id = '$id'
-//                                                            LIMIT $start_from,$results_per_page";
-
-            $result = $conn->query($mysql);
 
             if ($result->num_rows > 0) {
                 // output data of each row
@@ -72,6 +69,7 @@
                     }
                     $item_id = $row["item_id"];
                     print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_time);
+
                 }
             } else {
                 echo "0 results";
@@ -102,7 +100,7 @@
                 if ($curr_page != 1) {
                     echo('
     <li class="page-item">
-      <a class="page-link" href="mylistings.php?' . $querystring . 'page=' . ($curr_page - 1) . '" aria-label="Previous">
+      <a class="page-link" href="watchlist.php?' . $querystring . 'page=' . ($curr_page - 1) . '" aria-label="Previous">
         <span aria-hidden="true"><i class="fa fa-arrow-left"></i></span>
         <span class="sr-only">Previous</span>
       </a>
@@ -123,14 +121,14 @@
 
                     // Do this in any case
                     echo('
-      <a class="page-link" href="mylistings.php?' . $querystring . 'page=' . $i . '">' . $i . '</a>
+      <a class="page-link" href="watchlist.php?' . $querystring . 'page=' . $i . '">' . $i . '</a>
     </li>');
                 }
 
                 if ($curr_page != $max_page) {
                     echo('
     <li class="page-item">
-      <a class="page-link" href="mylistings.php?' . $querystring . 'page=' . ($curr_page + 1) . '" aria-label="Next">
+      <a class="page-link" href="watchlist.php?' . $querystring . 'page=' . ($curr_page + 1) . '" aria-label="Next">
         <span aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
         <span class="sr-only">Next</span>
       </a>
