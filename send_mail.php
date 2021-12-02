@@ -21,13 +21,13 @@ function send_email($email, $subject, $body)
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth = true;                                   //Enable SMTP authentication
-        $mail->Username = 'diancibo0@gmail.com';                     //SMTP username
+        $mail->Username = 'simpleclickmarketingteam@gmail.com';                     //SMTP username
         $mail->Password = 'zhou142857';                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
         $mail->Port = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('diancibo0@gmail.com', 'SimpleClick');
+        $mail->setFrom('simpleclickmarketingteam@gmail.com', 'Simple Click');
         $mail->addAddress($email);     //Add a recipient
 
         //Content
