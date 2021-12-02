@@ -113,7 +113,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $pass = 'root'; //对应的密码
                 $dsn ="mysql:host = $host;dbname=$dbName";
                 $pdo = new PDO($dsn,$user,$pass);
-//                $data = addslashes(fread(fopen($pic,"r"),filesize($pic)));
+                $data = addslashes(fread(fopen($pic,"r"),filesize($pic)));
                 //将图片的名称和路径存入数据库
                 $query = "INSERT INTO image(name,path)VALUES('$newfile','$path$newfile')";
                 $result = $pdo -> query($query);

@@ -146,7 +146,8 @@
                 $result = $pdo->query($query);
                 if($result){
                     $result = $result->fetchAll(2);
-                   echo "<img src=".$result[0]['path'].$size.">";
+                    if(empty($result[0]['path'])) $result[0]['path'] = 0;
+                    echo "<img src=".$result[0]['path'].$size.">";
                     // $path="./uploads/";//定义一个上传后的目录
                     // echo "<img src=$path".$result[0]['name'].">";
                 }
