@@ -267,29 +267,70 @@ $id_list_counter = array_unique($id_list_counter);
 
 $final_list = array_diff($id_list, $id_list_counter);
 //print_r($final_list);
-$final_list_str = implode(",", $final_list);
-print_r($final_list_str);
+$list_str = implode(",", $final_list);
+//print_r($final_list_str);
 
-$final_sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM item WHERE item_id in ({$final_list_str})";
+//echo $id;
+/*
+$historical_bids = "SELECT user_id,MAX(bid_price) AS bid_price FROM historical_auction_price WHERE (user_id = '$id') GROUP BY item_id";
+$result = $link -> query($historical_bids);
+
+$str15 = '';
+while($row = mysqli_fetch_array($result)) {
+//echo $row['item_id'];
+    $str15 .= $row['bid_price'];
+    //echo $str15;
+    $str15 .= ',';
+
+}
+$str15 = process_str($str15);
+//print_r($str15);
+$str15 = array_filter($str15);
+$average = array_sum($str15)/count($str15);
+$average;
+
+
+$low_bound = ceil($average * 0.5);
+$upper_bound = ceil($average * 1.5);
+
+$fulfilled = "SELECT user_id FROM item WHERE (item_id in ({$list_str})) AND ('$low_bound' <= current_price <= '$upper_bound') ";
+$result = $link -> query($fulfilled);
+
+$str16 = '';
+while($row = mysqli_fetch_array($result)) {
+//echo $row['item_id'];
+    $str16 .= $row['item_id'];
+    //echo $str15;
+    $str16 .= ',';
+
+}
+$str15 = process_str($str16);
+print_r($str16);
+*/
+
+
+
+
+$sql_total = "SELECT * FROM item WHERE item_id in ({$list_str}) ";
+$rs_result = $conn->query($sql_total);
+$num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
+$results_per_page = 8;
+$max_page = ceil($num_results / $results_per_page);
+
+
+$page = $_GET["page"] ?? 1;;
+$start_from = ($page-1) * $results_per_page;
+
+
+$final_sql = "SELECT item_id, title, description, current_price, num_bids, end_date  
+                FROM item WHERE item_id in ({$list_str})
+                LIMIT $start_from,$results_per_page";
+
 
 $result = $link -> query($final_sql);
-
 //echo gettype($result);
-/*
 
 
-foreach ($final_list as $value){
-
-    $final_sql = "SELECT item_id, title, description, current_price, num_bids, end_date FROM item WHERE (item_id='$value')";
-    $result = $link -> query($detail_id);
-    //print_r($result);
-
-    while($row = mysqli_fetch_array($result)) {
-        //echo $row['item_id'];
-        $str12 .= $row['item_id'];
-        $str12 .= ',';
-    }
-*/
 if ($result->num_rows > 0)
 {
     // output data of each row
@@ -309,10 +350,84 @@ if ($result->num_rows > 0)
     }
 }
 
-else {
-    echo "0 results";
+if (!isset($_GET['page'])) {
+    $curr_page = 1;
 }
+else {
+    $curr_page = $_GET['page'];
+}
+?>
 
+</ul>
 
+<!-- Pagination for results listings -->
+<nav aria-label="Search results pages" class="mt-5">
+  <ul class="pagination justify-content-center">
+
+<?php
+
+  // Copy any currently-set GET variables to the URL.
+  $querystring = "";
+  foreach ($_GET as $key => $value) {
+    if ($key != "page") {
+      $querystring .= "$key=$value&amp;";
+    }
+  }
+
+  $high_page_boost = max(3 - $curr_page, 0);
+  $low_page_boost = max(2 - ($max_page - $curr_page), 0);
+  $low_page = max(1, $curr_page - 2 - $low_page_boost);
+  $high_page = min($max_page, $curr_page + 2 + $high_page_boost);
+
+  if ($curr_page != 1) {
+    echo('
+    <li class="page-item">
+      <a class="page-link" href="recommendations.php?' . $querystring . 'page=' . ($curr_page - 1) . '" aria-label="Previous">
+        <span aria-hidden="true"><i class="fa fa-arrow-left"></i></span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>');
+  }
+
+  for ($i = $low_page; $i <= $high_page; $i++) {
+    if ($i == $curr_page) {
+      // Highlight the link
+      echo('
+    <li class="page-item active">');
+    }
+    else {
+      // Non-highlighted link
+      echo('
+    <li class="page-item">');
+    }
+
+    // Do this in any case
+    echo('
+      <a class="page-link" href="recommendations.php?' . $querystring . 'page=' . $i . '">' . $i . '</a>
+    </li>');
+  }
+
+  if ($curr_page != $max_page) {
+    echo('
+    <li class="page-item">
+      <a class="page-link" href="recommendations.php?' . $querystring . 'page=' . ($curr_page + 1) . '" aria-label="Next">
+        <span aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>');
+  }
+
+$conn->close();
 
 ?>
+
+  </ul>
+</nav>
+
+
+</div>
+
+
+<?php include_once("footer.php")?>
+
+
