@@ -126,7 +126,7 @@
 <div class="row"> <!-- Row #3 with pic + historical price -->
         <div class="col-sm-8"> <!-- Left col with pic -->
 
-            <div class="itemDescription">
+            <div class="picture">
                 <?php
                 //$id = isset($_GET['id'])?intval($_GET['id']):1;
                 //$id = $_GET['id'];
@@ -136,6 +136,7 @@
                 $dbName = 'auction_system';  // 使用的数据库
                 $user = 'root';  //数据库连接用户名
                 $pass = 'root'; //对应的密码
+                $size = ' width="600" height="500"';
 
                 $dsn = "mysql:host = $host;dbname=$dbName";
                 $pdo = new PDO($dsn,$user,$pass);
@@ -145,7 +146,7 @@
                 $result = $pdo->query($query);
                 if($result){
                     $result = $result->fetchAll(2);
-                    echo "<img src=".$result[0]['path'].">";
+                   echo "<img src=".$result[0]['path'].$size.">";
                     // $path="./uploads/";//定义一个上传后的目录
                     // echo "<img src=$path".$result[0]['name'].">";
                 }
@@ -158,7 +159,7 @@
 
         <div class="col-sm-4"> <!-- Right col with historical price -->
 
-            <div class="itemDescription">
+            <div class="historicalPrice">
                 <?php if ($his_result->num_rows > 0) {
                     // output data of each row
                     while($his_row = $his_result->fetch_assoc()) {
