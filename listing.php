@@ -136,7 +136,7 @@
                 $dbName = 'auction_system';  // 使用的数据库
                 $user = 'root';  //数据库连接用户名
                 $pass = 'root'; //对应的密码
-                $size = ' width="600" height="500"';
+                $size = ' width="700" height="700"';
 
                 $dsn = "mysql:host = $host;dbname=$dbName";
                 $pdo = new PDO($dsn,$user,$pass);
