@@ -58,8 +58,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
 
         ///
+        $dbms = 'mysql'; //数据库类型
+        $host = 'localhost';  //数据库主机名
+        $dbName = 'auction_system';  // 使用的数据库
+        $user = 'root';  //数据库连接用户名
+        $pass = 'root'; //对应的密码
+        $dsn ="mysql:host = $host;dbname=$dbName";
+        $pdo = new PDO($dsn,$user,$pass);
+
         //1.获取上传文件信息
-        $upfile=$_FILES["pic"];
+
+    $upfile=$_FILES["pic"];
         //定义允许的类型
         $typelist=array("image/jpeg","image/jpg","image/png","image/gif");
         $path="./images/";//定义一个上传后的目录
@@ -77,6 +86,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     break;
                 case 4:
                     $info="没有文件被上传.";
+                    $newfile = 'No image';
+                    $path = './images/0.jpg';
+                    $query = "INSERT INTO image(name,path)VALUES('$newfile','$path')";
+                    $result = $pdo -> query($query);
                     break;
                 case 5:
                     $info="找不到临时文件夹.";
@@ -106,13 +119,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 echo "文件上传成功!";
 
                 //将文件名和路径存储到数据库
-                $dbms = 'mysql'; //数据库类型
-                $host = 'localhost';  //数据库主机名
-                $dbName = 'auction_system';  // 使用的数据库
-                $user = 'root';  //数据库连接用户名
-                $pass = 'root'; //对应的密码
-                $dsn ="mysql:host = $host;dbname=$dbName";
-                $pdo = new PDO($dsn,$user,$pass);
                 $data = addslashes(fread(fopen($pic,"r"),filesize($pic)));
                 //将图片的名称和路径存入数据库
                 $query = "INSERT INTO image(name,path)VALUES('$newfile','$path$newfile')";
