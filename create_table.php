@@ -10,6 +10,8 @@ $sql = "CREATE TABLE users (
                                        passWord varchar(100) NOT NULL
 )";
 
+-0
+
 
 if(mysqli_query($test, $sql)){
     echo "Create Table successfully.";
