@@ -57,7 +57,12 @@
     $his = "SELECT * FROM historical_auction_price WHERE (item_id='$item_id') ORDER BY auction_id DESC";
     $his_result = $link->query($his);
 
-  $has_session = true;
+    if ($_SESSION['account_type'] == 'buyer') {
+        $has_session = true;
+    }
+    else{
+        $has_session = false;
+    }
 
 ?>
 
@@ -72,7 +77,7 @@
 <?php
   /* The following watchlist functionality uses JavaScript, but could
      just as easily use PHP as in other places in the code */
-  if ($now < $end_time):
+  if ($now < $end_time and $has_session == true):
 ?>
     <div id="watch_nowatch" <?php if ($has_session && $watching) echo('style="display: none"');?> >
       <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addToWatchlist()">+ Add to watchlist</button>
@@ -136,7 +141,7 @@
                 $dbName = 'auction_system';  // 使用的数据库
                 $user = 'root';  //数据库连接用户名
                 $pass = 'root'; //对应的密码
-                $size = ' width="700" height="700"';
+                $size = ' width="80%"';
 
                 $dsn = "mysql:host = $host;dbname=$dbName";
                 $pdo = new PDO($dsn,$user,$pass);
