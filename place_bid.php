@@ -31,7 +31,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         if (mysqli_query($link, $history)) {
             echo "Historical records are inserted successfully.";
             echo('<div class="text-center">Your bid are now placed successfully! You will be redirected shortly.</div>');
-            header("refresh:5;url=browse.php");
+            header("refresh:3;url=browse.php");
         } else {
             echo "Error: " . $history . "<br>" . mysqli_error($link);
         }
