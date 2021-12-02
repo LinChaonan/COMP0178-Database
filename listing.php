@@ -1,6 +1,5 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
-<?php session_start(); ?>
 <?php
    require_once "config.php";
 
