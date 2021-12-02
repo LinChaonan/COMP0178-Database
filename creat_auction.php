@@ -42,9 +42,8 @@
                         <div class="form-group row">
                             <label for="pic" class="col-sm-2 col-form-label text-right">Picture</label>
                             <div class="col-sm-10">
-                                <input type="file" name="pic">
-<!--                                <input type="submit" value="上传">-->
-                                <small id="detailsHelp" class="form-text text-muted">Picture of the listing to help bidders decide if it's what they're looking for.</small>
+                                <input type="file" name="pic" class="form-control" id="pic">
+                                <small id="pictureHelp" class="form-text text-muted">Picture of the listing to help bidders decide if it's what they're looking for.</small>
                             </div>
                         </div>
                         <div class="form-group row">
