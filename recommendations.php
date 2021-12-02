@@ -65,7 +65,7 @@ foreach ($str as $value){
 
 }
 $id_list1 = process_str($str2);
-
+//print_r($id_list1);
 
 // 2. Get ids of items with similar title with items the user is watching
 $titles = "SELECT b.title FROM watch_list AS a LEFT JOIN item AS b ON a.item_id = b.item_id WHERE a.user_id = '$id'";
@@ -96,7 +96,7 @@ foreach ($str3 as $value){
 
 }
 $id_list2 = process_str($str4);
-
+//print_r($id_list2);
 
 // 3. Get ids of items with same category with items the user bid before
 $categories = "SELECT b.category FROM historical_auction_price AS a LEFT JOIN item AS b ON a.item_id = b.item_id WHERE a.user_id = '$id'";
@@ -227,13 +227,69 @@ foreach ($str11 as $value){
 
 }
 $id_list6 = process_str($str12);
-print_r($id_list6);
+//print_r($id_list6);
 
+// all item_id to recommend
+$id_list = array_merge($id_list1, $id_list2, $id_list3, $id_list4, $id_list5, $id_list6);
+$id_list = array_unique($id_list);
 
+$str13 = '';
+$historical_id = "SELECT item_id FROM historical_auction_price WHERE (user_id = '$id')";
+$result = $link -> query($historical_id);
+//print_r($result);
 
+while($row = mysqli_fetch_array($result)) {
+    //echo $row['item_id'];
+    $str13 .= $row['item_id'];
+    $str13 .= ',';
+}
+//echo $str13;
+$id_counter_list1 = process_str($str13);
+//print_r($id_counter_list1);
+
+$str14 = '';
+$watched_id = "SELECT item_id FROM watch_list WHERE (user_id = '$id')";
+$result = $link -> query($watched_id);
+//print_r($result);
+
+while($row = mysqli_fetch_array($result)) {
+    //echo $row['item_id'];
+    $str14 .= $row['item_id'];
+    $str14 .= ',';
+}
+//echo $str14;
+$id_counter_list2 = process_str($str14);
+//print_r($id_counter_list2);
+
+$id_list_counter = array_merge($id_counter_list1, $id_counter_list2);
+$id_list_counter = array_unique($id_list_counter);
+//print_r($id_list_counter);
+
+$final_list = array_diff($id_list, $id_list_counter);
+//print_r($final_list);
+$final_list_str = implode(",", $final_list);
+print_r($final_list_str);
+
+$final_sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM item WHERE item_id in ({$final_list_str})";
+
+$result = $link -> query($final_sql);
+
+//echo gettype($result);
 /*
-//print_r($all_title_id);
 
+
+foreach ($final_list as $value){
+
+    $final_sql = "SELECT item_id, title, description, current_price, num_bids, end_date FROM item WHERE (item_id='$value')";
+    $result = $link -> query($detail_id);
+    //print_r($result);
+
+    while($row = mysqli_fetch_array($result)) {
+        //echo $row['item_id'];
+        $str12 .= $row['item_id'];
+        $str12 .= ',';
+    }
+*/
 if ($result->num_rows > 0)
 {
     // output data of each row
@@ -258,5 +314,5 @@ else {
 }
 
 
-*/
+
 ?>
