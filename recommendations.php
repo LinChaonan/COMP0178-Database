@@ -261,6 +261,7 @@ while($row = mysqli_fetch_array($result)) {
 $id_counter_list2 = process_str($str14);
 //print_r($id_counter_list2);
 
+
 $id_list_counter = array_merge($id_counter_list1, $id_counter_list2);
 $id_list_counter = array_unique($id_list_counter);
 //print_r($id_list_counter);
@@ -268,10 +269,10 @@ $id_list_counter = array_unique($id_list_counter);
 $final_list = array_diff($id_list, $id_list_counter);
 //print_r($final_list);
 $list_str = implode(",", $final_list);
-//print_r($final_list_str);
+//print_r($list_str);
 
-//echo $id;
-/*
+
+// 7. Calculate the average bid price placed by the user
 $historical_bids = "SELECT user_id,MAX(bid_price) AS bid_price FROM historical_auction_price WHERE (user_id = '$id') GROUP BY item_id";
 $result = $link -> query($historical_bids);
 
@@ -287,31 +288,76 @@ $str15 = process_str($str15);
 //print_r($str15);
 $str15 = array_filter($str15);
 $average = array_sum($str15)/count($str15);
-$average;
-
 
 $low_bound = ceil($average * 0.5);
 $upper_bound = ceil($average * 1.5);
+//echo $average, '-', $low_bound, '-', $upper_bound;
 
-$fulfilled = "SELECT user_id FROM item WHERE (item_id in ({$list_str})) AND ('$low_bound' <= current_price <= '$upper_bound') ";
+// 8. Show the recommendation result within the 50% - 150% interval of the average bid price first
+$fulfilled = "SELECT item_id FROM item 
+              WHERE (item_id in ({$list_str})) AND ($low_bound < current_price) AND (current_price < $upper_bound) ";
 $result = $link -> query($fulfilled);
 
 $str16 = '';
 while($row = mysqli_fetch_array($result)) {
 //echo $row['item_id'];
     $str16 .= $row['item_id'];
-    //echo $str15;
+    //echo $str16;
     $str16 .= ',';
 
 }
-$str15 = process_str($str16);
-print_r($str16);
-*/
+$str16 = process_str($str16);
 
 
+$partially_fulfilled = "SELECT item_id FROM item 
+                        WHERE (item_id in ({$list_str})) 
+                        AND (($low_bound > current_price) OR (current_price > $upper_bound) OR ($low_bound = current_price) OR (current_price = $upper_bound)) ";
+$result = $link -> query($partially_fulfilled);
+
+$str17 = '';
+while($row = mysqli_fetch_array($result)) {
+//echo $row['item_id'];
+    $str17 .= $row['item_id'];
+    //echo $str17;
+    $str17 .= ',';
+}
+$str17 = process_str($str17);
+//print_r($str17);
+
+$id_list_price = array_merge($str16, $str17);
+$id_list_price = array_unique($id_list_price);
+$id_list_price = array_slice($id_list_price, 0, 8);
+//print_r($id_list_price);
+$list_str2 = implode(",", $id_list_price);
+//echo "------------";
+//print_r($list_str2);
 
 
-$sql_total = "SELECT * FROM item WHERE item_id in ({$list_str}) ";
+foreach ($id_list_price as $id)
+{
+    $final_sql = "SELECT item_id, title, description, current_price, num_bids, end_date FROM item WHERE item_id = '$id' ";
+    $result = $link -> query($final_sql);
+    if ($result->num_rows > 0)
+    {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $list_id = $row["item_id"];
+            $title = $row["title"];
+            $description = $row["description"];
+            $current_price = $row["current_price"];
+            $num_bids = $row["num_bids"];
+            try {
+                $end_time = new DateTime($row["end_date"]);
+            } catch (Exception $e) {
+            }
+            $item_id = $row["item_id"];
+            print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_time);
+
+        }
+    }
+}
+/*
+$sql_total = "SELECT * FROM item WHERE item_id in ({$list_str2}) ";
 $rs_result = $conn->query($sql_total);
 $num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
 $results_per_page = 8;
@@ -323,7 +369,7 @@ $start_from = ($page-1) * $results_per_page;
 
 
 $final_sql = "SELECT item_id, title, description, current_price, num_bids, end_date  
-                FROM item WHERE item_id in ({$list_str})
+                FROM item WHERE item_id in ({$list_str2})
                 LIMIT $start_from,$results_per_page";
 
 
@@ -418,7 +464,7 @@ else {
   }
 
 $conn->close();
-
+*/
 ?>
 
   </ul>
