@@ -71,7 +71,7 @@ CREATE TABLE `historical_auction_price` (
   `item_id` int(10) NOT NULL,
   `user_id` int(10) NOT NULL,
   `bid_price` varchar(100) NOT NULL,
-  `bid_time` datetime(6) DEFAULT NULL
+  `bid_time` datetime(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
