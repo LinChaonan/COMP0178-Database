@@ -207,7 +207,7 @@ $start_from = ($page-1) * $results_per_page;
           if ($category == 'all') {
               $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
                       WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
-                                                            ORDER BY current_price DESC
+                                                            ORDER BY LENGTH(current_price) DESC, current_price DESC 
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
               $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
@@ -219,7 +219,7 @@ $start_from = ($page-1) * $results_per_page;
           else {
               $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
                       WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
-                                                            ORDER BY current_price DESC
+                                                            ORDER BY LENGTH(current_price) DESC, current_price DESC 
                                                             LIMIT $start_from,$results_per_page";
               $result = $conn->query($sql);
               $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
