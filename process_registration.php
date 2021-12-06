@@ -38,7 +38,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         exit('<script>alert("Password did not match")</script>');
     }
 
-    $sql = "INSERT INTO user (email, password, account_type) VALUES ('$email','$password', '$account_type')";
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO user (email, password, account_type) VALUES ('$email','$hashed_password','$account_type')";
+
 
     if (mysqli_query($link, $sql)) {
         echo ('<script>alert("Registration Successful")</script>');
@@ -47,6 +50,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         send_email($email, $subject, $body);
         header("refresh:0;url=browse.php");
     }
+
+    header("refresh:0;url=browse.php");
+    var_dump($hashed_password);
 
 }
 
