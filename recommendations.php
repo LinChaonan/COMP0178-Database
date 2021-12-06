@@ -67,6 +67,7 @@ foreach ($str as $value){
 $id_list1 = process_str($str2);
 //print_r($id_list1);
 
+
 // 2. Get ids of items with similar title with items the user is watching
 $titles = "SELECT b.title FROM watch_list AS a LEFT JOIN item AS b ON a.item_id = b.item_id WHERE a.user_id = '$id'";
 $str3 = '';
@@ -232,6 +233,8 @@ $id_list6 = process_str($str12);
 // all item_id to recommend
 $id_list = array_merge($id_list1, $id_list2, $id_list3, $id_list4, $id_list5, $id_list6);
 $id_list = array_unique($id_list);
+$id_list = array_filter($id_list);
+//print_r($id_list);
 
 $str13 = '';
 $historical_id = "SELECT item_id FROM historical_auction_price WHERE (user_id = '$id')";
