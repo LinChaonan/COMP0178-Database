@@ -18,6 +18,7 @@
   $current_price = $row["current_price"];
   $num_bids = $row["num_bids"];
   $start_price = $row["start_price"];
+  $status = $row["status"];
 
   $_SESSION['currentPrice'] = $current_price;
   $_SESSION['startPrice'] = $start_price;
@@ -104,11 +105,17 @@
   <div class="col-sm-4"> <!-- Right col with bidding info -->
 
     <p>
-<?php if ($now > $end_time): ?>
+<?php if ($status == "1"): ?>
      This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
       <br>
      Final price: ￡<?php echo($current_price) ?>
-<?php elseif ($_SESSION['account_type'] == 'buyer' and $his_result->num_rows > 0): ?>
+
+<?php elseif ($status == "2"): ?>
+     This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
+      <br>
+     Fail to sell at auction
+
+<?php elseif ($status == "0" and $_SESSION['account_type'] == 'buyer' and $his_result->num_rows > 0): ?>
      Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>  
     <p class="lead">Current bid: £<?php echo(number_format($current_price, 0)) ?></p>
 
@@ -122,7 +129,7 @@
       </div>
       <button type="submit" class="btn btn-primary form-control">Place bid</button>
     </form>
-<?php else: ?>
+<?php elseif ($status == "0" and $_SESSION['account_type'] == 'buyer' and $his_result->num_rows == 0): ?>
     Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>
     <p class="lead">Start price: £<?php echo(number_format($start_price, 0)) ?></p>
 

@@ -77,9 +77,17 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
 
         $end_time = new DateTime($row["end_date"]);
+        $reserve_price = $row["reserve_price"];
+        $current_price = $row["current_price"];
+
         $id = $row["item_id"];
         if ($now > $end_time) {
-            $check = "UPDATE item SET status = '1' WHERE item_id = '$id'";
+            if ($current_price>$reserve_price){
+                $check = "UPDATE item SET status = '1' WHERE item_id = '$id'";
+            }
+            else {
+                $check = "UPDATE item SET status = '2' WHERE item_id = '$id'";
+            }
             mysqli_query($conn,$check);
             }
         }
