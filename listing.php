@@ -17,8 +17,10 @@
   $description = $row["description"];
   $current_price = $row["current_price"];
   $num_bids = $row["num_bids"];
+  $start_price = $row["start_price"];
 
   $_SESSION['currentPrice'] = $current_price;
+  $_SESSION['startPrice'] = $start_price;
 
   $user_id = $_SESSION['userID'];
 
@@ -104,8 +106,9 @@
     <p>
 <?php if ($now > $end_time): ?>
      This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
-     <!-- TODO: Print the result of the auction here? -->
-<?php elseif ($_SESSION['account_type'] == 'buyer'): ?>
+      <br>
+     Final price: ￡<?php echo($current_price) ?>
+<?php elseif ($_SESSION['account_type'] == 'buyer' and $his_result->num_rows > 0): ?>
      Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>  
     <p class="lead">Current bid: £<?php echo(number_format($current_price, 0)) ?></p>
 
@@ -118,6 +121,20 @@
 	    <input name="bid" type="number" class="form-control" id="bid">
       </div>
       <button type="submit" class="btn btn-primary form-control">Place bid</button>
+    </form>
+<?php else: ?>
+    Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>
+    <p class="lead">Start price: £<?php echo(number_format($start_price, 0)) ?></p>
+
+    <!-- Bidding form -->
+    <form method="POST" action="place_bid.php">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">£</span>
+            </div>
+            <input name="bid" type="number" class="form-control" id="bid">
+        </div>
+        <button type="submit" class="btn btn-primary form-control">Place bid</button>
     </form>
 <?php endif ?>
 

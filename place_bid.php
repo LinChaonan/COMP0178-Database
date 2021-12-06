@@ -9,20 +9,22 @@ $itemID = $_SESSION['item_id'];
 $userID = $_SESSION['userID'];
 $now = new DateTime();
 $currentPrice = $_SESSION['currentPrice'];
+$startPrice = $_SESSION['startPrice'];
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $bid = $_POST["bid"];
-    if ($bid>$currentPrice) {
+    if ($bid>$currentPrice and $bid>$startPrice) {
 
         $sql = "UPDATE item SET current_price = '$bid', buyer_id = '$userID',
             num_bids=num_bids+1 WHERE item_id='$itemID'";
 
         if (mysqli_query($link, $sql)) {
-        //  echo "<script>alert('The new record is successfully inserted.')</script>";
+            //  echo "<script>alert('The new record is successfully inserted.')</script>";
         } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }
+
 
         $history = "INSERT INTO historical_auction_price (item_id, user_id, bid_price,bid_time)
                     VALUES ('$itemID','$userID','$bid',now())";
@@ -95,6 +97,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
         mysqli_close($link);
+    }
+    elseif($bid<$currentPrice) {
+        echo('<script>alert("Your price must be higher than the current price. ")</script>');
+        header("refresh:5;url=browse.php");
+    }
+    elseif($bid<$startPrice){
+        echo('<script>alert("Your price must be higher than the start price. ")</script>');
+        header("refresh:5;url=browse.php");
     }
     else{
         echo('<div class="text-center">Your price is lower than current price, try again.</div>');
