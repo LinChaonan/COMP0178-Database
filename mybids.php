@@ -66,9 +66,12 @@
                     $description = $row["description"];
                     $current_price = $row["current_price"];
                     $num_bids = $row["num_bids"];
-                    $end_date = $row["end_date"];
+                    try {
+                        $end_time = new DateTime($row["end_date"]);
+                    } catch (Exception $e) {
+                    }
                     $item_id = $row["item_id"];
-                    print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+                    print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_time);
                 }
             } else {
                 echo "0 results";
