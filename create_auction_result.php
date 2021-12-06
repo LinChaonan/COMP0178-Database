@@ -49,8 +49,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $sql = "INSERT INTO item (title,description, start_price, reserve_price, end_date, seller_id,category,status)
-                VALUES ('$title','$details','$SPrice','$RPrice','$Date','$seller_id','$category','0')";
+        $sql = "INSERT INTO item (title,description, start_price,current_price, reserve_price, end_date, seller_id,category,status)
+                VALUES ('$title','$details','$SPrice','$SPrice','$RPrice','$Date','$seller_id','$category','0')";
 
         if (mysqli_query($link, $sql)) {
             echo "<script>alert('Auction created successfully')</script>";
