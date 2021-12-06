@@ -17,8 +17,10 @@
   $description = $row["description"];
   $current_price = $row["current_price"];
   $num_bids = $row["num_bids"];
+  $start_price = $row["start_price"];
 
   $_SESSION['currentPrice'] = $current_price;
+  $_SESSION['startPrice'] = $start_price;
 
   $user_id = $_SESSION['userID'];
 
@@ -104,7 +106,8 @@
     <p>
 <?php if ($now > $end_time): ?>
      This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
-     <!-- TODO: Print the result of the auction here? -->
+      <br>
+     Final price: ￡<?php echo($current_price) ?>
 <?php elseif ($_SESSION['account_type'] == 'buyer'): ?>
      Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>  
     <p class="lead">Current bid: £<?php echo(number_format($current_price, 0)) ?></p>
