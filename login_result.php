@@ -26,7 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $_SESSION['email'] = $email;
         echo('<script>alert("You are now logged in! You will be redirected shortly.")</script>');
 
-        // Redirect to index after 5 seconds
+        // Redirect to browse
         header("refresh:0;url=browse.php");
         }
     else {
