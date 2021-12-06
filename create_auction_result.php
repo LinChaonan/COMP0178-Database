@@ -19,40 +19,40 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $Date = $_POST["auctionEndDate"];
         $seller_id = $_SESSION['userID'];
 
-        try {
-            $end_time = new DateTime($Date);
-        } catch (Exception $e) {
-        }
-        $now = new DateTime();
+    try {
+        $end_time = new DateTime($Date);
+    } catch (Exception $e) {
+    }
+    $now = new DateTime();
 
-        if (empty($title) || empty($category) || empty($SPrice) || empty($Date))
-        {
-            exit('Please complete the create auction form!');
-        }
+    if (empty($title) || empty($category) || empty($SPrice) || empty($Date))
+    {
+        exit('Please complete the create auction form!');
+    }
 
-        if ($SPrice < 1){
-            exit('The minimum starting price is 1');
-        }
+    if ($SPrice < 1){
+        exit('The minimum starting price is 1');
+    }
 
-        if (!empty($RPrice) && ($RPrice < $SPrice)) {
-            exit('The reserve price cannot be lower than the starting price');
-        }
+    if (!empty($RPrice) && ($RPrice < $SPrice)) {
+        exit('The reserve price cannot be lower than the starting price');
+    }
 
-        if ($end_time < $now) {
-            exit('The end date must be in the future');
-        }
+    if ($end_time < $now) {
+        exit('The end date must be in the future');
+    }
 
 
-        if (!$link) {
+
+    if (!$link) {
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $sql = "INSERT INTO item (title,description, start_price, reserve_price, 
-                                    end_date, seller_id,category,status)
+        $sql = "INSERT INTO item (title,description, start_price, reserve_price, end_date, seller_id,category,status)
                 VALUES ('$title','$details','$SPrice','$RPrice','$Date','$seller_id','$category','0')";
 
         if (mysqli_query($link, $sql)) {
-            echo "New auction successfully added";
+            echo "<script>alert('Auction created successfully')</script>";
         } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }

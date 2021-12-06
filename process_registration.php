@@ -19,34 +19,40 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $errors = array();
 
     if (!isset($_POST['repeat_password'], $_POST['password'], $_POST['email'])) {
-        exit('Please complete the registration form!');
+        exit('<script>alert("Please complete the registration form!")</script>');
     }
 
     if (empty($_POST['repeat_password']) || empty($_POST['password']) || empty($_POST['email'])) {
-        exit('Please complete the registration form!');
+        exit('<script>alert("Please complete the registration form!")</script>');
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        exit("Invalid email format");
+        exit('<script>alert("Invalid email format")</script>');
     }
 
     if(strlen($password) < 6){
-        exit("Password must have at least 6 characters");
+        exit('<script>alert("Password must have at least 6 characters")</script>');
     }
 
     if ($password != $repeat_password){
-        exit("Password did not match");
+        exit('<script>alert("Password did not match")</script>');
     }
 
-    $sql = "INSERT INTO user (email, password, account_type)
-VALUES ('$email','$password', '$account_type')";
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO user (email, password, account_type) VALUES ('$email','$hashed_password','$account_type')";
+
 
     if (mysqli_query($link, $sql)) {
-        echo "Registration Successful";
-        $subject = "New custom";
+        echo ('<script>alert("Registration Successful")</script>');
+        $subject = "New customer";
         $body = "Welcome to Simple Click!";
         send_email($email, $subject, $body);
+        header("refresh:0;url=browse.php");
     }
+
+    header("refresh:0;url=browse.php");
+    var_dump($hashed_password);
 
 }
 
