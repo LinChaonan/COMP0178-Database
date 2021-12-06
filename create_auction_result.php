@@ -2,6 +2,7 @@
 
 include_once("header.php");
 require_once "config.php";
+require_once "send_mail.php";
 
 ?>
 
@@ -53,6 +54,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if (mysqli_query($link, $sql)) {
             echo "<script>alert('Auction created successfully')</script>";
+
+            // Send mail to the seller.
+            $emails = "SELECT email FROM user WHERE user_id = '$seller_id'";
+            $email_result = $link->query($emails);
+            while ($row = mysqli_fetch_array($email_result)) {
+                $seller_email = $row['email'];
+                $subject = "Auction Create Successful";
+                $body = "Hi there, <br/> <br/> You successfully created an auction for ".$title.".<br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                send_email($seller_email, $subject, $body);
+            }
         } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }
