@@ -1,5 +1,8 @@
-<?php include_once("header.php")?>
-<?php require("utilities.php")?>
+<?php
+include_once("header.php");
+require("utilities.php");
+require_once "config.php";
+?>
 
 <div class="container">
 
@@ -18,16 +21,9 @@
   
   // TODO: Loop through results and print them out as list items.
 
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "auction_system";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($link->connect_error) {
+    die("Connection failed: " . $link->connect_error);
 }
 
 require_once "config.php";
@@ -465,9 +461,10 @@ else {
       </a>
     </li>');
   }
-
-$conn->close();
 */
+
+$link->close();
+
 ?>
 
   </ul>

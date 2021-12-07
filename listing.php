@@ -10,20 +10,18 @@
 
    $result = $link->query($sql);
    $row = $result->fetch_assoc();
-  // Get info from the URL:
-  // TODO: Use item_id to make a query to the database.
-  // DELETEME: For now, using placeholder data.
-  $title = $row["title"];
-  $description = $row["description"];
-  $current_price = $row["current_price"];
-  $num_bids = $row["num_bids"];
-  $start_price = $row["start_price"];
-  $status = $row["status"];
 
-  $_SESSION['currentPrice'] = $current_price;
-  $_SESSION['startPrice'] = $start_price;
+   $title = $row["title"];
+   $description = $row["description"];
+   $current_price = $row["current_price"];
+   $num_bids = $row["num_bids"];
+   $start_price = $row["start_price"];
+   $status = $row["status"];
 
-  $user_id = $_SESSION['userID'];
+   $_SESSION['currentPrice'] = $current_price;
+   $_SESSION['startPrice'] = $start_price;
+
+   $user_id = $_SESSION['userID'];
 
   try {
     $end_time = new DateTime($row["end_date"]);

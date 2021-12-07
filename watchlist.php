@@ -1,23 +1,19 @@
-<?php include_once("header.php")?>
-<?php require("utilities.php")?>
+<?php
+include_once("header.php");
+require("utilities.php");
+require_once "config.php";
+?>
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "auction_system";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($link->connect_error) {
+    die("Connection failed: " . $link->connect_error);
 }
 
 $id = $_SESSION['userID'];
 
 $sql_total = "SELECT * FROM watch_list WHERE user_id = '$id' ";
-$rs_result = $conn->query($sql_total);
+$rs_result = $link->query($sql_total);
 $num_results = mysqli_num_rows($rs_result);
 $results_per_page = 4;
 $max_page = ceil($num_results / $results_per_page);
@@ -32,7 +28,7 @@ $start_from = ($page-1) * $results_per_page;
 $mysql= "SELECT b.item_id, b.title, b.description, b.current_price, b.num_bids, b.end_date 
                         FROM watch_list AS a LEFT JOIN item AS b ON a.item_id = b.item_id
                         WHERE a.user_id ='$id'LIMIT $start_from,$results_per_page";
-$result = $conn->query($mysql);
+$result = $link->query($mysql);
 
 if (!isset($_GET['page'])) {
     $curr_page = 1;
@@ -135,7 +131,7 @@ else {
     </li>');
                 }
 
-                $conn->close();
+                $link->close();
 
                 ?>
 

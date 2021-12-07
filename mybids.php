@@ -1,5 +1,8 @@
-<?php include_once("header.php")?>
-<?php require("utilities.php")?>
+<?php
+include_once("header.php");
+require("utilities.php");
+require_once "config.php";
+?>
 
     <div class="container mt-5">
 
@@ -18,22 +21,15 @@
                 $curr_page = $_GET['page'];
             }
 
-            $servername = "localhost";
-            $username = "root";
-            $password = "root";
-            $dbname = "auction_system";
-
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
             // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
+            if ($link->connect_error) {
+                die("Connection failed: " . $link->connect_error);
             }
 
             $id = $_SESSION['userID'];
 
             $sql_total = "SELECT * FROM item WHERE buyer_id = '$id'";
-            $rs_result = $conn->query($sql_total);
+            $rs_result = $link->query($sql_total);
             $num_results = mysqli_num_rows($rs_result);
             $results_per_page = 4;
             $max_page = ceil($num_results / $results_per_page);
@@ -45,7 +41,7 @@
             $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             WHERE buyer_id = '$id'
                                                             LIMIT $start_from,$results_per_page";
-            $result = $conn->query($sql);
+            $result = $link->query($sql);
 
             if ($result->num_rows > 0) {
                 // output data of each row
@@ -126,7 +122,7 @@
     </li>');
                 }
 
-                $conn->close();
+                $link->close();
 
                 ?>
 
