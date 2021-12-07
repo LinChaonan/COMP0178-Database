@@ -7,7 +7,7 @@
    $_SESSION['item_id']= $item_id;
 
    $sql = "SELECT * FROM item WHERE (item_id='$item_id')";
-   //执行上面的sql语句并将结果集赋给result。
+
    $result = $link->query($sql);
    $row = $result->fetch_assoc();
   // Get info from the URL:
@@ -157,14 +157,12 @@
 
             <div class="picture">
                 <?php
-                //$id = isset($_GET['id'])?intval($_GET['id']):1;
-                //$id = $_GET['id'];
-                $id = $item_id;    //id正常应该是通过用户填入的id获取（客户端发送过来的查询数据id）
-                $dbms = 'mysql'; //数据库类型
-                $host = 'localhost';  //数据库主机名
-                $dbName = 'auction_system';  // 使用的数据库
-                $user = 'root';  //数据库连接用户名
-                $pass = 'root'; //对应的密码
+                $id = $item_id;
+                $dbms = 'mysql';
+                $host = 'localhost';
+                $dbName = 'auction_system';
+                $user = 'root';
+                $pass = 'root';
                 $size = ' width="80%"';
 
                 $dsn = "mysql:host = $host;dbname=$dbName";
@@ -177,8 +175,7 @@
                     $result = $result->fetchAll(2);
                     if(empty($result[0]['path'])) $result[0]['path'] = 0;
                     echo "<img src=".$result[0]['path'].$size.">";
-                    // $path="./uploads/";//定义一个上传后的目录
-                    // echo "<img src=$path".$result[0]['name'].">";
+
                 }
                 else{
                     echo "Handle errors";

@@ -11,17 +11,6 @@
                  retrieved from the query -->
 
             <?php
-            // Demonstration of what listings will look like using dummy data.
-            //  $item_id = "87021";
-            //  $title = "Dummy title";
-            //  $description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget rutrum ipsum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus feugiat, ipsum vel egestas elementum, sem mi vestibulum eros, et facilisis dui nisi eget metus. In non elit felis. Ut lacus sem, pulvinar ultricies pretium sed, viverra ac sapien. Vivamus condimentum aliquam rutrum. Phasellus iaculis faucibus pellentesque. Sed sem urna, maximus vitae cursus id, malesuada nec lectus. Vestibulum scelerisque vulputate elit ut laoreet. Praesent vitae orci sed metus varius posuere sagittis non mi.";
-            //  $current_price = 30;
-            //  $num_bids = 1;
-            //  $end_date = new DateTime('2020-09-16T11:00:00');
-
-            // This uses a function defined in utilities.php
-            //print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-
             if (!isset($_GET['page'])) {
                 $curr_page = 1;
             }
@@ -45,7 +34,7 @@
 
             $sql_total = "SELECT * FROM item WHERE buyer_id = '$id'";
             $rs_result = $conn->query($sql_total);
-            $num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
+            $num_results = mysqli_num_rows($rs_result);
             $results_per_page = 4;
             $max_page = ceil($num_results / $results_per_page);
 
