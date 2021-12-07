@@ -68,19 +68,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }
 
-        ///
-        $dbms = 'mysql';
-        $host = 'localhost';
-        $dbName = 'auction_system';
-        $user = 'root';
-        $pass = 'root';
-        $dsn ="mysql:host = $host;dbname=$dbName";
-        $pdo = new PDO($dsn,$user,$pass);
+
 
     $upfile=$_FILES["pic"];
         //Define type list
         $typelist=array("image/jpeg","image/jpg","image/png","image/gif");
         $path="./images/";
+
         if($upfile["error"]>0){
             switch($upfile['error']){
                 case 1:
@@ -96,7 +90,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $newfile = 'No image';
                     $path = './images/0.jpg';
                     $query = "INSERT INTO image(name,path)VALUES('$newfile','$path')";
-                    $result = $pdo -> query($query);
+                    $result = $link-> query($query);
+                    echo('<div class="text-center">Auction successfully created! <a href ="mylistings.php">View your new listing.</a></div>');
                     die();
                 case 5:
                     $info="Cannot find temp directory.";
@@ -124,11 +119,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             //Upload file (move file)
             if(move_uploaded_file($upfile["tmp_name"],$path.$newfile)){
                 echo "File uploaded successfully!";
-                //Store file name and path into database
-                $data = addslashes(fread(fopen($pic,"r"),filesize($pic)));
                 //Store pic name and path into database
                 $query = "INSERT INTO image(name,path)VALUES('$newfile','$path$newfile')";
-                $result = $pdo -> query($query);
+                $result = $link -> query($query);
 
                 if($result){
                     echo"Pic have been stored into database";
@@ -147,23 +140,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         mysqli_close($link);
 
 }
-// This function takes the form data and adds the new auction to the database.
-
-/* TODO #1: Connect to MySQL database (perhaps by requiring a file that
-            already does this). */
-
-
-/* TODO #2: Extract form data into variables. Because the form was a 'post'
-            form, its data can be accessed via $POST['auctionTitle'], 
-            $POST['auctionDetails'], etc. Perform checking on the data to
-            make sure it can be inserted into the database. If there is an
-            issue, give some semi-helpful feedback to user. */
-
-
-/* TODO #3: If everything looks good, make the appropriate call to insert
-            data into the database. */
-
-
 
 // If all is successful, let user know.
 echo('<div class="text-center">Auction successfully created! <a href ="mylistings.php">View your new listing.</a></div>');
