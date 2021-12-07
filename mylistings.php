@@ -39,7 +39,7 @@ require_once "config.php";
             $start_from = ($page-1) * $results_per_page;
 
             $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
-                                                            WHERE seller_id = '$id'
+                                                            WHERE seller_id = '$id' ORDER BY item_id DESC
                                                             LIMIT $start_from,$results_per_page";
             $result = $link->query($sql);
 
