@@ -1,5 +1,6 @@
 <?php
 require_once "config.php";
+require_once "send_mail.php";
 include_once("header.php");
 require("utilities.php");
 ?>
@@ -79,9 +80,33 @@ if ($result->num_rows > 0) {
         $current_price = $row["current_price"];
 
         $id = $row["item_id"];
+        $seller_id = $row["seller_id"];
+        $buyer_id = $row["buyer_id"];
+
         if ($now > $end_time) {
             if ($current_price>$reserve_price){
                 $check = "UPDATE item SET status = '1' WHERE item_id = '$id'";
+
+                // Send email to seller after their item sold.
+                $seller_emails = "SELECT email FROM user WHERE user_id = '$seller_id'";
+                $email_result = $link->query($seller_emails);
+                while ($row = mysqli_fetch_array($email_result)) {
+                    $seller_email = $row['email'];
+                    $subject = "Item Sold";
+                    $body = "Hi there, <br/> <br/> Your item has already sold. <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                    send_email($seller_email, $subject, $body);
+                }
+
+                // Send email to buyer after they won the auction.
+                $buyer_emails = "SELECT email FROM user WHERE user_id = '$buyer_id'";
+                $result = $link->query($buyer_emails);
+                while ($row = mysqli_fetch_array($result)) {
+                    $buyer_email = $row['email'];
+                    $subject = "You Won The Auction";
+                    $body = "Hi there, <br/> <br/> You won the auction <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                    send_email($buyer_email, $subject, $body);
+                }
+
             }
             else {
                 $check = "UPDATE item SET status = '2' WHERE item_id = '$id'";
