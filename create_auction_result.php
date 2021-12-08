@@ -101,30 +101,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     die("Error:".$info);
             }
         }
+
         //File size filter
         if($upfile['size']>10000000){
             die("file size exceed limitation");
         }
+
         //File type filter
         if(!in_array($upfile["type"],$typelist)){
             die("Illegal file type!".$upfile["type"]);
         }
+
         //Generate a new file name
         $fileinfo=pathinfo($upfile["name"]);
         do{
             $newfile=date("YmdHis").rand(1000,9999).".".$fileinfo["extension"];
         }while(file_exists($path.$newfile));
+
         //Check if this file existed
         if(is_uploaded_file($upfile["tmp_name"])){
             //Upload file (move file)
             if(move_uploaded_file($upfile["tmp_name"],$path.$newfile)){
-                echo "File uploaded successfully!";
                 //Store pic name and path into database
                 $query = "INSERT INTO image(name,path)VALUES('$newfile','$path$newfile')";
                 $result = $link -> query($query);
 
                 if($result){
-                    echo"Pic have been stored into database";
+                    echo "<script>alert('Picture uploaded successfully')</script>";
                 }
                 else{
                     echo"Request failed, please try again";
