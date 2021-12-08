@@ -16,28 +16,28 @@
         <input class="form-check-input" type="radio" name="accountType" id="accountSeller" value="seller">
         <label class="form-check-label" for="accountSeller">Seller</label>
       </div>
-      <small id="accountTypeHelp" class="form-text-inline text-muted"><span class="text-danger">* Required.</span></small>
+      <small id="accountTypeHelp" class="form-text-inline text-muted"><span class="text-danger">* Required</span></small>
 	</div>
   </div>
   <div class="form-group row">
     <label for="email" class="col-sm-2 col-form-label text-right">Email</label>
 	<div class="col-sm-10">
       <input type="text" class="form-control" name="email" id="email" placeholder="Please enter your email">
-      <small id="emailHelp" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+      <small id="emailHelp" class="form-text text-muted"><span class="text-danger">* Required</span></small>
 	</div>
   </div>
   <div class="form-group row">
     <label for="password" class="col-sm-2 col-form-label text-right">Password</label>
     <div class="col-sm-10">
       <input type="password" class="form-control" name="password" id="password" placeholder="Please enter your password">
-      <small id="passwordHelp" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+      <small id="passwordHelp" class="form-text text-muted"><span class="text-danger">* Required</span></small>
     </div>
   </div>
   <div class="form-group row">
     <label for="passwordConfirmation" class="col-sm-2 col-form-label text-right">Repeat password</label>
     <div class="col-sm-10">
       <input type="password" class="form-control" name="repeat_password" id="passwordConfirmation" placeholder="Please enter your password again">
-      <small id="passwordConfirmationHelp" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+      <small id="passwordConfirmationHelp" class="form-text text-muted"><span class="text-danger">* Required</span></small>
     </div>
   </div>
     <div class="form-group row">

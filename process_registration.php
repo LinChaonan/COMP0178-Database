@@ -38,12 +38,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         exit('<script>alert("Passwords do not match")</script>');
     }
 
-    if (strlen($phone) < 7){
-        exit('<script>alert("Password enter a valid phone number")</script>');
-    }
+    if (((strlen($phone) > 6) and (strlen($phone) < 14)) or (strlen($phone) == 0)){
 
-    if (strlen($phone) > 13){
-        exit('<script>alert("Password enter a valid phone number")</script>');
+    }
+    else{
+        exit('<script>alert("Please enter a valid phone number")</script>');
     }
 
     if ((preg_match('/^[0-9-+]{7}$/',$phone))
@@ -52,14 +51,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         or (preg_match('/^[0-9-+]{10}$/',$phone))
         or (preg_match('/^[0-9-+]{11}$/',$phone))
         or (preg_match('/^[0-9-+]{12}$/',$phone))
-        or (preg_match('/^[0-9-+]{13}$/',$phone)))
+        or (preg_match('/^[0-9-+]{13}$/',$phone))
+        or (strlen($phone) == 0))
     {
 
     }
     else{
         exit('<script>alert("Password enter a valid phone number")</script>');
     }
-
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
