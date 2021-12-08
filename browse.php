@@ -1,5 +1,9 @@
-<?php include_once("header.php")?>
-<?php require("utilities.php")?>
+<?php
+require_once "config.php";
+include_once("header.php");
+require("utilities.php");
+?>
+
 
 <div class="container">
 
@@ -58,19 +62,13 @@
 </div>
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "auction_system";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($link->connect_error) {
+    die("Connection failed: " . $link->connect_error);
 }
 
 $sql = "SELECT * FROM item";
-$result = $conn->query($sql);
+$result = $link->query($sql);
 $now = new DateTime();
 
 if ($result->num_rows > 0) {
@@ -88,7 +86,7 @@ if ($result->num_rows > 0) {
             else {
                 $check = "UPDATE item SET status = '2' WHERE item_id = '$id'";
             }
-            mysqli_query($conn,$check);
+            mysqli_query($link,$check);
             }
         }
 } else {
@@ -98,34 +96,21 @@ if ($result->num_rows > 0) {
 
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "auction_system";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($link->connect_error) {
+    die("Connection failed: " . $link->connect_error);
 }
 
 $sql_total = "SELECT * FROM item";
-$rs_result = $conn->query($sql_total);
-$num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
-$results_per_page = 8;
-$max_page = ceil($num_results / $results_per_page);
-
-
-$page = $_GET["page"] ?? 1;;
-$start_from = ($page-1) * $results_per_page;
+$rs_result = $link->query($sql_total);
+[$max_page,$results_per_page,$start_from] = page_calculation($rs_result);
 
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {
       $keyword = '';
       $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             LIMIT $start_from,$results_per_page";
-      $result = $conn->query($sql);
+      $result = $link->query($sql);
 
 
   }
@@ -137,7 +122,7 @@ $start_from = ($page-1) * $results_per_page;
       $category = '';
       $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             LIMIT $start_from,$results_per_page";
-      $result = $conn->query($sql);
+      $result = $link->query($sql);
 
   }
   else {
@@ -148,7 +133,7 @@ $start_from = ($page-1) * $results_per_page;
       $ordering = '';
       $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             LIMIT $start_from,$results_per_page";
-      $result = $conn->query($sql);
+      $result = $link->query($sql);
   }
   else {
       $ordering = $_GET['order_by'];
@@ -157,11 +142,11 @@ $start_from = ($page-1) * $results_per_page;
           if ($category == 'all') {
               $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
                       WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')
-                                                            ORDER BY end_date DESC
+                                                            ORDER BY end_date
                                                             LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
+              $result = $link->query($sql);
               $data = "SELECT * FROM item WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')";
-              $data_result = $conn ->query($data);
+              $data_result = $link ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -169,11 +154,11 @@ $start_from = ($page-1) * $results_per_page;
           else {
               $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
                       WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
-                                                            ORDER BY end_date DESC
+                                                            ORDER BY end_date
                                                             LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
+              $result = $link->query($sql);
               $data = "SELECT * FROM item WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
-              $data_result = $conn ->query($data);
+              $data_result = $link ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -188,9 +173,9 @@ $start_from = ($page-1) * $results_per_page;
                       WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
                                                             ORDER BY LENGTH(current_price), current_price
                                                             LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
+              $result = $link->query($sql);
               $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
-              $data_result = $conn ->query($data);
+              $data_result = $link ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -200,9 +185,9 @@ $start_from = ($page-1) * $results_per_page;
                       WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
                                                             ORDER BY LENGTH(current_price), current_price
                                                             LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
+              $result = $link->query($sql);
               $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
-              $data_result = $conn ->query($data);
+              $data_result = $link ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -217,9 +202,9 @@ $start_from = ($page-1) * $results_per_page;
                       WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
                                                             ORDER BY LENGTH(current_price) DESC, current_price DESC 
                                                             LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
+              $result = $link->query($sql);
               $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
-              $data_result = $conn ->query($data);
+              $data_result = $link ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -229,9 +214,9 @@ $start_from = ($page-1) * $results_per_page;
                       WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
                                                             ORDER BY LENGTH(current_price) DESC, current_price DESC 
                                                             LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
+              $result = $link->query($sql);
               $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
-              $data_result = $conn ->query($data);
+              $data_result = $link ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -246,13 +231,6 @@ $start_from = ($page-1) * $results_per_page;
   else {
     $curr_page = $_GET['page'];
   }
-
-  /* TODO: Use above values to construct a query. Use this query to 
-     retrieve data from the database. (If there is no form data entered,
-     decide on appropriate default value/default query to make. */
-  
-  /* For the purposes of pagination, it would also be helpful to know the
-     total number of results that satisfy the above query */
 
 ?>
 
@@ -348,7 +326,7 @@ if ($result->num_rows > 0) {
     </li>');
   }
 
-$conn->close();
+$link->close();
 
 ?>
 

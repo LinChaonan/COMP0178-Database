@@ -1,11 +1,8 @@
 <?php
-
 require_once "config.php";
 require_once "send_mail.php";
 // TODO: Extract $_POST variables, check they're OK, and attempt to login.
 // Notify user of success/failure and redirect/give navigation options.
-
-// For now, I will just set session variables and redirect.
 
 session_start();
 

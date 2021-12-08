@@ -1,5 +1,8 @@
-<?php include_once("header.php")?>
-<?php require("utilities.php")?>
+<?php
+include_once("header.php");
+require("utilities.php");
+require_once "config.php";
+?>
 
     <div class="container mt-5">
 
@@ -11,17 +14,6 @@
                  retrieved from the query -->
 
             <?php
-            // Demonstration of what listings will look like using dummy data.
-            //  $item_id = "87021";
-            //  $title = "Dummy title";
-            //  $description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget rutrum ipsum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus feugiat, ipsum vel egestas elementum, sem mi vestibulum eros, et facilisis dui nisi eget metus. In non elit felis. Ut lacus sem, pulvinar ultricies pretium sed, viverra ac sapien. Vivamus condimentum aliquam rutrum. Phasellus iaculis faucibus pellentesque. Sed sem urna, maximus vitae cursus id, malesuada nec lectus. Vestibulum scelerisque vulputate elit ut laoreet. Praesent vitae orci sed metus varius posuere sagittis non mi.";
-            //  $current_price = 30;
-            //  $num_bids = 1;
-            //  $end_date = new DateTime('2020-09-16T11:00:00');
-
-            // This uses a function defined in utilities.php
-            //print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-
             if (!isset($_GET['page'])) {
                 $curr_page = 1;
             }
@@ -29,34 +21,21 @@
                 $curr_page = $_GET['page'];
             }
 
-            $servername = "localhost";
-            $username = "root";
-            $password = "root";
-            $dbname = "auction_system";
-
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $dbname);
             // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
+            if ($link->connect_error) {
+                die("Connection failed: " . $link->connect_error);
             }
 
             $id = $_SESSION['userID'];
 
             $sql_total = "SELECT * FROM item WHERE buyer_id = '$id'";
-            $rs_result = $conn->query($sql_total);
-            $num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
-            $results_per_page = 4;
-            $max_page = ceil($num_results / $results_per_page);
-
-
-            $page = $_GET["page"] ?? 1;;
-            $start_from = ($page-1) * $results_per_page;
+            $rs_result = $link->query($sql_total);
+            [$max_page,$results_per_page,$start_from] = page_calculation($rs_result);
 
             $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             WHERE buyer_id = '$id'
                                                             LIMIT $start_from,$results_per_page";
-            $result = $conn->query($sql);
+            $result = $link->query($sql);
 
             if ($result->num_rows > 0) {
                 // output data of each row
@@ -137,7 +116,7 @@
     </li>');
                 }
 
-                $conn->close();
+                $link->close();
 
                 ?>
 

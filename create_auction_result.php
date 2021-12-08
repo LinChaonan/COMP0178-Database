@@ -53,8 +53,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $sql = "INSERT INTO item (title,description, start_price, reserve_price, end_date, seller_id,category,status)
-                VALUES ('$title','$details','$SPrice','$RPrice','$Date','$seller_id','$category','0')";
+        $sql = "INSERT INTO item (title,description, start_price,current_price, reserve_price, end_date, seller_id,category,status)
+                VALUES ('$title','$details','$SPrice','$SPrice','$RPrice','$Date','$seller_id','$category','0')";
 
         if (mysqli_query($link, $sql)) {
             echo "<script>alert('Auction created successfully')</script>";
@@ -72,109 +72,81 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }
 
-        ///
-        $dbms = 'mysql'; //数据库类型
-        $host = 'localhost';  //数据库主机名
-        $dbName = 'auction_system';  // 使用的数据库
-        $user = 'root';  //数据库连接用户名
-        $pass = 'root'; //对应的密码
-        $dsn ="mysql:host = $host;dbname=$dbName";
-        $pdo = new PDO($dsn,$user,$pass);
 
-        //1.获取上传文件信息
 
     $upfile=$_FILES["pic"];
-        //定义允许的类型
+        //Define type list
         $typelist=array("image/jpeg","image/jpg","image/png","image/gif");
-        $path="./images/";//定义一个上传后的目录
-        //2.过滤上传文件的错误号
+        $path="./images/";
+
         if($upfile["error"]>0){
-            switch($upfile['error']){//获取错误信息
+            switch($upfile['error']){
                 case 1:
-                    $info="上传得文件超过了 php.ini中upload_max_filesize 选项中的最大值.";
-                    break;
+                    $info="file size exceed php.ini - upload_max_filesize.";
+                    die("Error:".$info);
                 case 2:
-                    $info="上传文件大小超过了html中MAX_FILE_SIZE 选项中的最大值.";
-                    break;
+                    $info="file size exceed html - MAX_FILE_SIZE.";
+                    die("Error:".$info);
                 case 3:
-                    $info="文件只有部分被上传";
-                    break;
+                    $info="Just part of the file have been uploaded.";
+                    die("Error:".$info);
                 case 4:
-                    $info="没有文件被上传.";
                     $newfile = 'No image';
                     $path = './images/0.jpg';
                     $query = "INSERT INTO image(name,path)VALUES('$newfile','$path')";
-                    $result = $pdo -> query($query);
-                    break;
+                    $result = $link-> query($query);
+                    echo('<div class="text-center">Auction successfully created! <a href ="mylistings.php">View your new listing.</a></div>');
+                    die();
                 case 5:
-                    $info="找不到临时文件夹.";
-                    break;
+                    $info="Cannot find temp directory.";
+                    die("Error:".$info);
                 case 6:
-                    $info="文件写入失败！";break;
-            }die("上传文件错误,原因:".$info);
+                    $info="writing file failed";
+                    die("Error:".$info);
+            }
         }
-        //3.本次上传文件大小的过滤（自己选择）
+
+        //File size filter
         if($upfile['size']>10000000){
-            die("上传文件大小超出限制");
+            die("file size exceed limitation");
         }
-        //4.类型过滤
+
+        //File type filter
         if(!in_array($upfile["type"],$typelist)){
-            die("上传文件类型非法!".$upfile["type"]);
+            die("Illegal file type!".$upfile["type"]);
         }
-        //5.上传后的文件名定义(随机获取一个文件名)
-        $fileinfo=pathinfo($upfile["name"]);//解析上传文件名字
+
+        //Generate a new file name
+        $fileinfo=pathinfo($upfile["name"]);
         do{
             $newfile=date("YmdHis").rand(1000,9999).".".$fileinfo["extension"];
         }while(file_exists($path.$newfile));
-        //6.执行文件上传
-        //判断是否是一个上传的文件
-        if(is_uploaded_file($upfile["tmp_name"])){
-            //执行文件上传(移动上传文件)
-            if(move_uploaded_file($upfile["tmp_name"],$path.$newfile)){
-                echo "文件上传成功!";
 
-                //将文件名和路径存储到数据库
-                $data = addslashes(fread(fopen($pic,"r"),filesize($pic)));
-                //将图片的名称和路径存入数据库
+        //Check if this file existed
+        if(is_uploaded_file($upfile["tmp_name"])){
+            //Upload file (move file)
+            if(move_uploaded_file($upfile["tmp_name"],$path.$newfile)){
+                //Store pic name and path into database
                 $query = "INSERT INTO image(name,path)VALUES('$newfile','$path$newfile')";
-                $result = $pdo -> query($query);
+                $result = $link -> query($query);
 
                 if($result){
-                    echo"文件已存储到数据库";
+                    echo "<script>alert('Picture uploaded successfully')</script>";
                 }
                 else{
-                    echo"请求失败，请重试";
+                    echo"Request failed, please try again";
                 }
             }else{
-                die("上传文件失败！");
+                die("Update file failed!");
             }
         }else{
-            die("不是一个上传文件!");
+            die("Not a file!");
         }
-
-
 
 
         mysqli_close($link);
 
 }
-// This function takes the form data and adds the new auction to the database.
-
-/* TODO #1: Connect to MySQL database (perhaps by requiring a file that
-            already does this). */
-
-
-/* TODO #2: Extract form data into variables. Because the form was a 'post'
-            form, its data can be accessed via $POST['auctionTitle'], 
-            $POST['auctionDetails'], etc. Perform checking on the data to
-            make sure it can be inserted into the database. If there is an
-            issue, give some semi-helpful feedback to user. */
-
-
-/* TODO #3: If everything looks good, make the appropriate call to insert
-            data into the database. */
-
-
 
 // If all is successful, let user know.
 echo('<div class="text-center">Auction successfully created! <a href ="mylistings.php">View your new listing.</a></div>');
