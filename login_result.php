@@ -16,8 +16,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $result = $link->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $_session['password'] = $row["password"];
-        $password = $_session['password'];
+        $_SESSION['password'] = $row["password"];
+        $password = $_SESSION['password'];
         //echo $pwd, $password;
         if (password_verify($pwd, $password)) {
             $accountType = $row["account_type"];

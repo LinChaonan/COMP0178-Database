@@ -47,7 +47,7 @@ if ($info_result->num_rows > 0) {
 ?>
 <p>
     <br>
-    <a href="reset-password.php" class="btn btn-dark">Reset Your Password</a>
+    <a href="reset_password.php" class="btn btn-dark">Reset Your Password</a>
 </p>
 </body>
 </html>

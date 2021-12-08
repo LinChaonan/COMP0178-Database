@@ -29,7 +29,7 @@
             </div>
 
             <div class="form-group row">
-                <button type="submit" class="btn btn-primary form-control">Register</button>
+                <button type="submit" class="btn btn-primary form-control">Change Password</button>
             </div>
         </form>
 
@@ -37,12 +37,15 @@
 <?php
 
 include_once("footer.php");
+require_once("config.php");
+require_once("send_mail.php");
+
 
 session_start();
 
 $id = $_SESSION['userID'];
 $password = $_SESSION['password'];
-//echo $id;
+//echo $id, '-', $password;
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -54,15 +57,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         exit('<script>alert("Please fill in all required information")</script>');
     }
 
-    if (password_verify($pwd, $password))
-    {
+    if (password_verify($pwd, $password)) {
 
     }
-    else{
+    else {
         exit('<script>alert("Incorrect Password")</script>');
     }
 
-    if ($npwd != $rpwd){
+    if ($pwd == $npwd){
+        exit('<script>alert("New password cannot the same with current password")</script>');
+
+    }
+
+    if ($npwd != $rpwd) {
         exit('<script>alert("New passwords do not match")</script>');
     }
 
@@ -71,22 +78,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "UPDATE user SET password = '$hashed_password' WHERE user_id='$id'";
 
     if (mysqli_query($link, $sql)) {
-        //  echo "<script>alert('The new record is successfully inserted.')</script>";
+        echo "<script>alert('The password is changed successfully.')</script>";
+        //$subject = "Password Changed";
+        //$body = "Hi there, <br/> <br/> The password for your Simple Click account has changed. <br/> <br/> Enjoy you journey at Simple Click! <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/> ";
+        //send_email($email, $subject, $body);
+
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($link);
     }
 
-
-
-
-
-
-
-
-
-
-
 }
+mysqli_close($link);
+header("refresh:0;url=browse.php");
+
+
+
+
+
+
+
+
+
+
 
 
 
