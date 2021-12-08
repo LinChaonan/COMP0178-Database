@@ -82,6 +82,7 @@ if ($result->num_rows > 0) {
         $id = $row["item_id"];
         $seller_id = $row["seller_id"];
         $buyer_id = $row["buyer_id"];
+        $title = $row["title"];
 
         if ($now > $end_time) {
             if ($current_price>$reserve_price){
@@ -93,7 +94,7 @@ if ($result->num_rows > 0) {
                 while ($row = mysqli_fetch_array($email_result)) {
                     $seller_email = $row['email'];
                     $subject = "Item Sold";
-                    $body = "Hi there, <br/> <br/> Your item has already sold. <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                    $body = "Hi there, <br/> <br/> Your ".title." has already sold. <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
                     send_email($seller_email, $subject, $body);
                 }
 
@@ -103,13 +104,24 @@ if ($result->num_rows > 0) {
                 while ($row = mysqli_fetch_array($result)) {
                     $buyer_email = $row['email'];
                     $subject = "You Won The Auction";
-                    $body = "Hi there, <br/> <br/> You won the auction <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                    $body = "Hi there, <br/> <br/> You won the auction on ".title."<br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
                     send_email($buyer_email, $subject, $body);
                 }
+                $check = "UPDATE item SET status = '3' WHERE item_id = '$id'";
 
             }
             else {
                 $check = "UPDATE item SET status = '2' WHERE item_id = '$id'";
+                // Send email to seller after the price of item didn't reach the reserve price.
+                $Seller_emails = "SELECT email FROM user WHERE user_id = '$seller_id'";
+                $email_result = $link->query($Seller_emails);
+                while ($row = mysqli_fetch_array($email_result)) {
+                    $seller_email = $row['email'];
+                    $subject = "The price of your ".title."did not reach the reserved price";
+                    $body = "Hi there, <br/> <br/> Your ".title." did not reach the reserved price. <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                    send_email($seller_email, $subject, $body);
+                }
+                $check = "UPDATE item SET status = '4' WHERE item_id = '$id'";
             }
             mysqli_query($link,$check);
         }
