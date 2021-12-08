@@ -1,9 +1,5 @@
-<?php
-require_once "config.php";
-include_once("header.php");
-require("utilities.php");
-?>
-
+<?php include_once("header.php")?>
+<?php require("utilities.php")?>
 
 <div class="container">
 
@@ -62,13 +58,21 @@ require("utilities.php");
 </div>
 
 <?php
+require_once "send_mail.php";
+
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "auction_system";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($link->connect_error) {
-    die("Connection failed: " . $link->connect_error);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 $sql = "SELECT * FROM item";
-$result = $link->query($sql);
+$result = $conn->query($sql);
 $now = new DateTime();
 
 if ($result->num_rows > 0) {
@@ -79,14 +83,36 @@ if ($result->num_rows > 0) {
         $current_price = $row["current_price"];
 
         $id = $row["item_id"];
+        $seller_id = $row["seller_id"];
+        $buyer_id = $row["buyer_id"];
+
         if ($now > $end_time) {
             if ($current_price>$reserve_price){
                 $check = "UPDATE item SET status = '1' WHERE item_id = '$id'";
+                // Send email to seller after their item sold.
+                $seller_emails = "SELECT email FROM user WHERE user_id = '$seller_id'";
+                $email_result = $conn->query($seller_emails);
+                while ($row = mysqli_fetch_array($email_result)) {
+                    $seller_email = $row['email'];
+                    $subject = "Item Sold";
+                    $body = "Hi there, <br/> <br/> Your item has already sold. <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                    send_email($seller_email, $subject, $body);
+                }
+                // Send email to buyer after they won the auction.
+                $buyer_emails = "SELECT email FROM user WHERE user_id = '$buyer_id'";
+                $result = $conn->query($buyer_emails);
+                while ($row = mysqli_fetch_array($result)) {
+                    $buyer_email = $row['email'];
+                    $subject = "You Won The Auction";
+                    $body = "Hi there, <br/> <br/> You won the auction <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                    send_email($buyer_email, $subject, $body);
+                }
+
             }
             else {
                 $check = "UPDATE item SET status = '2' WHERE item_id = '$id'";
             }
-            mysqli_query($link,$check);
+            mysqli_query($conn,$check);
             }
         }
 } else {
@@ -96,21 +122,34 @@ if ($result->num_rows > 0) {
 
 
 <?php
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "auction_system";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($link->connect_error) {
-    die("Connection failed: " . $link->connect_error);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 $sql_total = "SELECT * FROM item";
-$rs_result = $link->query($sql_total);
-[$max_page,$results_per_page,$start_from] = page_calculation($rs_result);
+$rs_result = $conn->query($sql_total);
+$num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
+$results_per_page = 8;
+$max_page = ceil($num_results / $results_per_page);
+
+
+$page = $_GET["page"] ?? 1;;
+$start_from = ($page-1) * $results_per_page;
 
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {
       $keyword = '';
       $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             LIMIT $start_from,$results_per_page";
-      $result = $link->query($sql);
+      $result = $conn->query($sql);
 
 
   }
@@ -122,7 +161,7 @@ $rs_result = $link->query($sql_total);
       $category = '';
       $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             LIMIT $start_from,$results_per_page";
-      $result = $link->query($sql);
+      $result = $conn->query($sql);
 
   }
   else {
@@ -133,7 +172,7 @@ $rs_result = $link->query($sql_total);
       $ordering = '';
       $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             LIMIT $start_from,$results_per_page";
-      $result = $link->query($sql);
+      $result = $conn->query($sql);
   }
   else {
       $ordering = $_GET['order_by'];
@@ -142,11 +181,11 @@ $rs_result = $link->query($sql_total);
           if ($category == 'all') {
               $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
                       WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')
-                                                            ORDER BY end_date
+                                                            ORDER BY end_date DESC
                                                             LIMIT $start_from,$results_per_page";
-              $result = $link->query($sql);
+              $result = $conn->query($sql);
               $data = "SELECT * FROM item WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')";
-              $data_result = $link ->query($data);
+              $data_result = $conn ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -154,11 +193,11 @@ $rs_result = $link->query($sql_total);
           else {
               $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
                       WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
-                                                            ORDER BY end_date
+                                                            ORDER BY end_date DESC
                                                             LIMIT $start_from,$results_per_page";
-              $result = $link->query($sql);
+              $result = $conn->query($sql);
               $data = "SELECT * FROM item WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
-              $data_result = $link ->query($data);
+              $data_result = $conn ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -173,9 +212,9 @@ $rs_result = $link->query($sql_total);
                       WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
                                                             ORDER BY LENGTH(current_price), current_price
                                                             LIMIT $start_from,$results_per_page";
-              $result = $link->query($sql);
+              $result = $conn->query($sql);
               $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
-              $data_result = $link ->query($data);
+              $data_result = $conn ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -185,9 +224,9 @@ $rs_result = $link->query($sql_total);
                       WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
                                                             ORDER BY LENGTH(current_price), current_price
                                                             LIMIT $start_from,$results_per_page";
-              $result = $link->query($sql);
+              $result = $conn->query($sql);
               $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
-              $data_result = $link ->query($data);
+              $data_result = $conn ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -202,9 +241,9 @@ $rs_result = $link->query($sql_total);
                       WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
                                                             ORDER BY LENGTH(current_price) DESC, current_price DESC 
                                                             LIMIT $start_from,$results_per_page";
-              $result = $link->query($sql);
+              $result = $conn->query($sql);
               $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
-              $data_result = $link ->query($data);
+              $data_result = $conn ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -214,9 +253,9 @@ $rs_result = $link->query($sql_total);
                       WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
                                                             ORDER BY LENGTH(current_price) DESC, current_price DESC 
                                                             LIMIT $start_from,$results_per_page";
-              $result = $link->query($sql);
+              $result = $conn->query($sql);
               $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
-              $data_result = $link ->query($data);
+              $data_result = $conn ->query($data);
               $num_results = mysqli_num_rows($data_result);
               $max_page = ceil($num_results / $results_per_page);
 
@@ -232,6 +271,13 @@ $rs_result = $link->query($sql_total);
     $curr_page = $_GET['page'];
   }
 
+  /* TODO: Use above values to construct a query. Use this query to 
+     retrieve data from the database. (If there is no form data entered,
+     decide on appropriate default value/default query to make. */
+  
+  /* For the purposes of pagination, it would also be helpful to know the
+     total number of results that satisfy the above query */
+
 ?>
 
 <div class="container mt-5">
@@ -246,6 +292,7 @@ $rs_result = $link->query($sql_total);
 <?php
 
 if ($result->num_rows > 0) {
+
 
     // output data of each row
     while($row = $result->fetch_assoc()) {
@@ -326,7 +373,7 @@ if ($result->num_rows > 0) {
     </li>');
   }
 
-$link->close();
+$conn->close();
 
 ?>
 
