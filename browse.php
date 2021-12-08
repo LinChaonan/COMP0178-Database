@@ -103,13 +103,7 @@ if ($link->connect_error) {
 
 $sql_total = "SELECT * FROM item";
 $rs_result = $link->query($sql_total);
-$num_results = mysqli_num_rows($rs_result);
-$results_per_page = 8;
-$max_page = ceil($num_results / $results_per_page);
-
-
-$page = $_GET["page"] ?? 1;;
-$start_from = ($page-1) * $results_per_page;
+[$max_page,$results_per_page,$start_from] = page_calculation($rs_result);
 
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {

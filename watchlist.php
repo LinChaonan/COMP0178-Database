@@ -14,16 +14,7 @@ $id = $_SESSION['userID'];
 
 $sql_total = "SELECT * FROM watch_list WHERE user_id = '$id' ";
 $rs_result = $link->query($sql_total);
-$num_results = mysqli_num_rows($rs_result);
-$results_per_page = 4;
-$max_page = ceil($num_results / $results_per_page);
-
-
-$page = $_GET["page"] ?? 1;;
-$start_from = ($page-1) * $results_per_page;
-
-$page = $_GET["page"] ?? 1;;
-$start_from = ($page-1) * $results_per_page;
+[$max_page,$results_per_page,$start_from] = page_calculation($rs_result);
 
 $mysql= "SELECT b.item_id, b.title, b.description, b.current_price, b.num_bids, b.end_date 
                         FROM watch_list AS a LEFT JOIN item AS b ON a.item_id = b.item_id

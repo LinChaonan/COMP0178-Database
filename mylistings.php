@@ -30,13 +30,7 @@ require_once "config.php";
 
             $sql_total = "SELECT * FROM item WHERE seller_id = '$id' ";
             $rs_result = $link->query($sql_total);
-            $num_results = mysqli_num_rows($rs_result);
-            $results_per_page = 4;
-            $max_page = ceil($num_results / $results_per_page);
-
-
-            $page = $_GET["page"] ?? 1;;
-            $start_from = ($page-1) * $results_per_page;
+            [$max_page,$results_per_page,$start_from] = page_calculation($rs_result);
 
             $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             WHERE seller_id = '$id' ORDER BY item_id DESC

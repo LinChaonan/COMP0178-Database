@@ -72,4 +72,16 @@ function process_str($str)
     return $str_arr;
 }
 
+function page_calculation($result): array
+{
+    $num_results = mysqli_num_rows($result);
+    $results_per_page = 8;
+    $max_page = ceil($num_results / $results_per_page);
+
+
+    $page = $_GET["page"] ?? 1;;
+    $start_from = ($page-1) * $results_per_page;
+    return [$max_page,$results_per_page,$start_from];
+}
+
 ?>
