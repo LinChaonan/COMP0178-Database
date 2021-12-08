@@ -45,24 +45,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $title = $row['title'];
 
 
-            // Send mail to the bidder.
-            $emails = "SELECT email FROM user WHERE user_id = '$userID'";
-            $email_result = $link->query($emails);
-            while ($row = mysqli_fetch_array($email_result)) {
-                $bidder_email = $row['email'];
-                $subject = "Bid Successful";
-                $body = "Hi there, <br/> <br/> You successfully bid on the " . $title . ".<br/> The curent price of " . title . " is £" . $bid . ".<br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
-                send_email($bidder_email, $subject, $body);
-            }
-
-
             // Get the email addresses of historical bidders.
             $sql_email = "SELECT DISTINCT u.email
                           FROM historical_auction_price AS h Left JOIN user AS u ON u.user_id = h.user_id
-                          WHERE h.item_id = '$itemID'";
-            $result = $link->query($sql_email);
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
+                          WHERE h.item_id = '$itemID' AND h.user_id != '$userID'";
+            $result1 = $link->query($sql_email);
+            if ($result1->num_rows > 0) {
+                while ($row = $result1->fetch_assoc()) {
                     // for each user, get their emails, and send this to them
                     $historical_bidder_email = $row["email"];
                     // Email title
@@ -82,9 +71,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 WHERE w.item_id = '$itemID' AND
                                 w.user_id != (SELECT user_id FROM historical_auction_price 
                                 WHERE item_id = '$itemID')";
-            $result = $link->query($sql_email);
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
+            $result2 = $link->query($sql_email);
+            if ($result2->num_rows > 0) {
+                while ($row = $result2->fetch_assoc()) {
                     // for each user, get their emails, and send this to them
                     $watchlist_email = $row["email"];
                     // Email title
@@ -95,6 +84,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                 }
             }
+
+
+            // Send mail to the bidder.
+            $emails = "SELECT email FROM user WHERE user_id = '$userID'";
+            $email_result = $link->query($emails);
+            while ($row = mysqli_fetch_array($email_result)) {
+                $bidder_email = $row['email'];
+                $subject = "Bid Successful";
+                $body = "Hi there, <br/> <br/> You successfully bid on the " . $title . ".<br/> The curent price of " . title . " is £" . $bid . ".<br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                send_email($bidder_email, $subject, $body);
+            }
+
         }
         mysqli_close($link);
     }
