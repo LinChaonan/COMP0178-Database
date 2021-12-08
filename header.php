@@ -1,4 +1,5 @@
 <?php
+  require_once "config.php";
   session_start();
 ?>
 
@@ -37,6 +38,30 @@
   else {
     echo '<button type="button" class="btn nav-link" data-toggle="modal" data-target="#loginModal">Login</button>';
   }
+
+  $seller_id = $_SESSION['userID'];
+  $sql = "select seller_id,SUM(current_price)from item where seller_id='$seller_id' and status= '1'";
+  $exist = "select * from seller where seller_id='$seller_id'";
+
+  $result = $link->query($sql);
+  $exist_result = $link->query($exist);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $revenue = $row["SUM(current_price)"];
+    } else {
+        $revenue = "0";
+    }
+
+    if ($exist_result->num_rows > 0) {
+    $update = "UPDATE seller SET revenue='$revenue' WHERE seller_id='$seller_id'";
+    }
+    else {
+        $update = "insert into seller (seller_id, revenue) values('$seller_id','$revenue')";
+    }
+
+    mysqli_query($link,$update);
+
 ?>
 
     </li>
@@ -68,13 +93,14 @@
 	<li class="nav-item mx-1">
       <a class="nav-link" href="mylistings.php">My Listings</a>
     </li>
-    <li class="nav-item mx-1">
-      <a class="nav-link" href="profile.php">My Profile</a>
-    </li>
 	<li class="nav-item ml-3">
       <a class="nav-link btn border-light" href="creat_auction.php">+ Create auction</a>
+    </li>
+    <li class="nav-item ml-3">
+      <a class="nav-link btn border-light" href="profile.php">Total revenue: ￡' . $revenue . '</a>
     </li>');
   }
+    $link->close();
 ?>
   </ul>
 </nav>
