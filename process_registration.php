@@ -1,7 +1,6 @@
 
 <?php
 
-include_once("register.php");
 require_once("config.php");
 require_once("send_mail.php");
 // TODO: Extract $_POST variables, check they're OK, and attempt to login.
@@ -68,15 +67,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     if (mysqli_query($link, $sql)) {
+
         echo ('<script>alert("Registration Successful")</script>');
         $subject = "Welcome to Simple Click!";
         $body = "Hi there, <br/> <br/> Your registration was successful. <br/> <br/> Enjoy you journey at Simple Click! <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/> ";
         send_email($email, $subject, $body);
-        header("refresh:0;url=browse.php");
     }
-
-    header("refresh:0;url=browse.php");
-
 }
-
+mysqli_close($link);
+header("refresh:0;url=browse.php");
 ?>
