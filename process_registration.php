@@ -16,13 +16,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST["password"]);
     $repeat_password = trim($_POST["repeat_password"]);
     $account_type = $_POST["accountType"];
+    $phone = $_POST["phone"];
+    $address = $_POST["address"];
 
     if (!isset($_POST['repeat_password'], $_POST['password'], $_POST['email'])) {
-        exit('<script>alert("Please complete the registration form!")</script>');
+        exit('<script>alert("Please complete the registration form")</script>');
     }
 
     if (empty($_POST['repeat_password']) || empty($_POST['password']) || empty($_POST['email'])) {
-        exit('<script>alert("Please complete the registration form!")</script>');
+        exit('<script>alert("Please complete the registration form")</script>');
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -34,12 +36,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($password != $repeat_password){
-        exit('<script>alert("Password did not match")</script>');
+        exit('<script>alert("Passwords do not match")</script>');
     }
+
+    if (strlen($phone) < 7){
+        exit('<script>alert("Password enter a valid phone number")</script>');
+    }
+
+    if (strlen($phone) > 13){
+        exit('<script>alert("Password enter a valid phone number")</script>');
+    }
+
+    if ((preg_match('/^[0-9-+]{7}$/',$phone))
+        or (preg_match('/^[0-9-+]{8}$/',$phone))
+        or (preg_match('/^[0-9-+]{9}$/',$phone))
+        or (preg_match('/^[0-9-+]{10}$/',$phone))
+        or (preg_match('/^[0-9-+]{11}$/',$phone))
+        or (preg_match('/^[0-9-+]{12}$/',$phone))
+        or (preg_match('/^[0-9-+]{13}$/',$phone)))
+    {
+
+    }
+    else{
+        exit('<script>alert("Password enter a valid phone number")</script>');
+    }
+
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO user (email, password, account_type) VALUES ('$email','$hashed_password','$account_type')";
+    $sql = "INSERT INTO user (email, password, account_type, address, phone) VALUES ('$email','$hashed_password','$account_type', '$address', '$phone')";
 
 
     if (mysqli_query($link, $sql)) {
