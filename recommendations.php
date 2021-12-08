@@ -7,6 +7,8 @@ require_once "config.php";
 <div class="container">
 
 <h2 class="my-3">Recommendations for you</h2>
+<small id="phoneHelp" class="form-text text-muted"><span class="text">
+        * Recommendations are based on your historical behaviours</span></small>
 
 <?php
   // This page is for showing a buyer recommended items based on their bid 
