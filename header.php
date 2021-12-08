@@ -58,12 +58,18 @@
     </li>
     <li class="nav-item mx-1">
       <a class="nav-link" href="watchlist.php">Watch List</a>
+    </li>
+    <li class="nav-item mx-1">
+      <a class="nav-link" href="profile.php">My Profile</a>
     </li>');
   }
   if (isset($_SESSION['account_type']) && $_SESSION['account_type'] == 'seller') {
   echo('
 	<li class="nav-item mx-1">
       <a class="nav-link" href="mylistings.php">My Listings</a>
+    </li>
+    <li class="nav-item mx-1">
+      <a class="nav-link" href="profile.php">My Profile</a>
     </li>
 	<li class="nav-item ml-3">
       <a class="nav-link btn border-light" href="creat_auction.php">+ Create auction</a>
