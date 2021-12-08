@@ -269,7 +269,6 @@ $start_from = ($page-1) * $results_per_page;
 
 if ($result->num_rows > 0) {
 
-
     // output data of each row
     while($row = $result->fetch_assoc()) {
         $list_id = $row["item_id"];

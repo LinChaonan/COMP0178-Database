@@ -16,7 +16,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST["password"]);
     $repeat_password = trim($_POST["repeat_password"]);
     $account_type = $_POST["accountType"];
-    $errors = array();
 
     if (!isset($_POST['repeat_password'], $_POST['password'], $_POST['email'])) {
         exit('<script>alert("Please complete the registration form!")</script>');
@@ -45,14 +44,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mysqli_query($link, $sql)) {
         echo ('<script>alert("Registration Successful")</script>');
-        $subject = "New customer";
-        $body = "Welcome to Simple Click!";
+        $subject = "Welcome to Simple Click!";
+        $body = "Hi there, <br/> <br/> Your registration was successful. <br/> <br/> Enjoy you journey at Simple Click! <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/> ";
         send_email($email, $subject, $body);
         header("refresh:0;url=browse.php");
     }
 
     header("refresh:0;url=browse.php");
-    var_dump($hashed_password);
 
 }
 

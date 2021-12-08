@@ -35,6 +35,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         exit('The minimum starting price is 1');
     }
 
+    if ($category = 'Choose...'){
+        exit('Please choose a valid category');
+    }
+
     if (!empty($RPrice) && ($RPrice < $SPrice)) {
         exit('The reserve price cannot be lower than the starting price');
     }
@@ -60,8 +64,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $email_result = $link->query($emails);
             while ($row = mysqli_fetch_array($email_result)) {
                 $seller_email = $row['email'];
-                $subject = "Auction Create Successful";
-                $body = "Hi there, <br/> <br/> You successfully created an auction for ".$title.".<br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                $subject = "New Auction Created";
+                $body = "Hi there, <br/> <br/> You have successfully created an auction for ".$title.".<br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
                 send_email($seller_email, $subject, $body);
             }
         } else {

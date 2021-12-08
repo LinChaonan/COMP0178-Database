@@ -40,6 +40,13 @@
       <small id="passwordConfirmationHelp" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
     </div>
   </div>
+    <div class="form-group row">
+        <label for="address" class="col-sm-2 col-form-label text-right">Address</label>
+        <div class="col-sm-10">
+            <input type="address" class="form-control" name="address" id="address" placeholder="Home address">
+            <small id="addressHelp" class="form-text text-muted"><span class="text-danger">* Required.</span></small>
+        </div>
+    </div>
   <div class="form-group row">
     <button type="submit" class="btn btn-primary form-control">Register</button>
   </div>
