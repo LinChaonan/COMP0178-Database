@@ -39,25 +39,25 @@
     echo '<button type="button" class="btn nav-link" data-toggle="modal" data-target="#loginModal">Login</button>';
   }
 
-  $seller_id = $_SESSION['userID'];
-  $sql = "select seller_id,SUM(current_price)from item where seller_id='$seller_id' and status= '1'";
-  $exist = "select * from seller where seller_id='$seller_id'";
+  $h_seller_id = $_SESSION['userID'];
+  $h_sql = "select seller_id,SUM(current_price)from item where seller_id='$h_seller_id' and status= '1'";
+  $h_exist = "select * from seller where seller_id='$h_seller_id'";
 
-  $result = $link->query($sql);
-  $exist_result = $link->query($exist);
+  $h_result = $link->query($h_sql);
+  $h_exist_result = $link->query($h_exist);
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $revenue = $row["SUM(current_price)"];
+    if ($h_result->num_rows > 0) {
+        $h_row = $h_result->fetch_assoc();
+        $revenue = $h_row["SUM(current_price)"];
     } else {
         $revenue = "0";
     }
 
-    if ($exist_result->num_rows > 0) {
-    $update = "UPDATE seller SET revenue='$revenue' WHERE seller_id='$seller_id'";
+    if ($h_exist_result->num_rows > 0) {
+    $update = "UPDATE seller SET revenue='$revenue' WHERE seller_id='$h_seller_id'";
     }
     else {
-        $update = "insert into seller (seller_id, revenue) values('$seller_id','$revenue')";
+        $update = "insert into seller (seller_id, revenue) values('$h_seller_id','$revenue')";
     }
 
     mysqli_query($link,$update);
@@ -100,7 +100,6 @@
       <a class="nav-link btn border-light" href="profile.php">Total revenue: ￡' . $revenue . '</a>
     </li>');
   }
-    $link->close();
 ?>
   </ul>
 </nav>
