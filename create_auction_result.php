@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         exit('The minimum starting price is 1');
     }
 
-    if ($category = 'Choose...'){
+    if ($category == 'Choose...'){
         exit('Please choose a valid category');
     }
 
