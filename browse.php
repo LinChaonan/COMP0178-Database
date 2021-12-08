@@ -1,78 +1,74 @@
-<?php include_once("header.php")?>
-<?php require("utilities.php")?>
+<?php
+require_once "config.php";
+include_once("header.php");
+require("utilities.php");
+?>
 
-<div class="container">
 
-<h2 class="my-3">Browse listings</h2>
+    <div class="container">
 
-<div id="searchSpecs">
-<!-- When this form is submitted, this PHP page is what processes it.
-     Search/sort specs are passed to this page through parameters in the URL
-     (GET method of passing data to a page). -->
-<form method="get" action="browse.php">
-  <div class="row">
-    <div class="col-md-5 pr-0">
-      <div class="form-group">
-        <label for="keyword" class="sr-only">Search keyword:</label>
-	    <div class="input-group">
-          <div class="input-group-prepend">
+        <h2 class="my-3">Browse listings</h2>
+
+        <div id="searchSpecs">
+            <!-- When this form is submitted, this PHP page is what processes it.
+                 Search/sort specs are passed to this page through parameters in the URL
+                 (GET method of passing data to a page). -->
+            <form method="get" action="browse.php">
+                <div class="row">
+                    <div class="col-md-5 pr-0">
+                        <div class="form-group">
+                            <label for="keyword" class="sr-only">Search keyword:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
             <span class="input-group-text bg-transparent pr-0 text-muted">
               <i class="fa fa-search"></i>
             </span>
-          </div>
-          <input type="text" class="form-control border-left-0" name="keyword" id="keyword" placeholder="Search for anything">
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3 pr-0">
-      <div class="form-group">
-        <label for="cat" class="sr-only">Search within:</label>
-        <select class="form-control" name="cat" id="cat">
-          <option selected value="all">All categories</option>
-          <option value="jewellery">Jewellery </option>
-          <option value="art_works">Art Works </option>
-          <option value="electronics">Electronics </option>
-          <option value="books">Books </option>
-          <option value="homes">Homes </option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-3 pr-0">
-      <div class="form-inline">
-        <label class="mx-2" for="order_by">Sort by:</label>
-        <select class="form-control" name="order_by" id="order_by">
-          <option selected value="pricelow">Price (low to high)</option>
-          <option value="pricehigh">Price (high to low)</option>
-          <option value="date">Soonest expiry</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-1 px-0">
-      <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-  </div>
-</form>
-</div> <!-- end search specs bar -->
+                                </div>
+                                <input type="text" class="form-control border-left-0" name="keyword" id="keyword" placeholder="Search for anything">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 pr-0">
+                        <div class="form-group">
+                            <label for="cat" class="sr-only">Search within:</label>
+                            <select class="form-control" name="cat" id="cat">
+                                <option selected value="all">All categories</option>
+                                <option value="jewellery">Jewellery </option>
+                                <option value="art_works">Art Works </option>
+                                <option value="electronics">Electronics </option>
+                                <option value="books">Books </option>
+                                <option value="homes">Homes </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 pr-0">
+                        <div class="form-inline">
+                            <label class="mx-2" for="order_by">Sort by:</label>
+                            <select class="form-control" name="order_by" id="order_by">
+                                <option selected value="pricelow">Price (low to high)</option>
+                                <option value="pricehigh">Price (high to low)</option>
+                                <option value="date">Soonest expiry</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1 px-0">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div> <!-- end search specs bar -->
 
 
-</div>
+    </div>
 
 <?php
-require_once "send_mail.php";
-
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "auction_system";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($link->connect_error) {
+    die("Connection failed: " . $link->connect_error);
 }
 
 $sql = "SELECT * FROM item";
-$result = $conn->query($sql);
+$result = $link->query($sql);
 $now = new DateTime();
 
 if ($result->num_rows > 0) {
@@ -83,38 +79,16 @@ if ($result->num_rows > 0) {
         $current_price = $row["current_price"];
 
         $id = $row["item_id"];
-        $seller_id = $row["seller_id"];
-        $buyer_id = $row["buyer_id"];
-
         if ($now > $end_time) {
             if ($current_price>$reserve_price){
                 $check = "UPDATE item SET status = '1' WHERE item_id = '$id'";
-                // Send email to seller after their item sold.
-                $seller_emails = "SELECT email FROM user WHERE user_id = '$seller_id'";
-                $email_result = $conn->query($seller_emails);
-                while ($row = mysqli_fetch_array($email_result)) {
-                    $seller_email = $row['email'];
-                    $subject = "Item Sold";
-                    $body = "Hi there, <br/> <br/> Your item has already sold. <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
-                    send_email($seller_email, $subject, $body);
-                }
-                // Send email to buyer after they won the auction.
-                $buyer_emails = "SELECT email FROM user WHERE user_id = '$buyer_id'";
-                $result = $conn->query($buyer_emails);
-                while ($row = mysqli_fetch_array($result)) {
-                    $buyer_email = $row['email'];
-                    $subject = "You Won The Auction";
-                    $body = "Hi there, <br/> <br/> You won the auction <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
-                    send_email($buyer_email, $subject, $body);
-                }
-
             }
             else {
                 $check = "UPDATE item SET status = '2' WHERE item_id = '$id'";
             }
-            mysqli_query($conn,$check);
-            }
+            mysqli_query($link,$check);
         }
+    }
 } else {
     echo "0 results";
 }
@@ -122,266 +96,245 @@ if ($result->num_rows > 0) {
 
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "auction_system";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($link->connect_error) {
+    die("Connection failed: " . $link->connect_error);
 }
 
 $sql_total = "SELECT * FROM item";
-$rs_result = $conn->query($sql_total);
-$num_results = mysqli_num_rows($rs_result);  // 统计总共的记录条数
-$results_per_page = 8;
-$max_page = ceil($num_results / $results_per_page);
+$rs_result = $link->query($sql_total);
+[$max_page,$results_per_page,$start_from] = page_calculation($rs_result);
 
-
-$page = $_GET["page"] ?? 1;;
-$start_from = ($page-1) * $results_per_page;
-
-  // Retrieve these from the URL
-  if (!isset($_GET['keyword'])) {
-      $keyword = '';
-      $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
+// Retrieve these from the URL
+if (!isset($_GET['keyword'])) {
+    $keyword = '';
+    $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
                                                             LIMIT $start_from,$results_per_page";
-      $result = $conn->query($sql);
+    $result = $link->query($sql);
 
 
-  }
-  else {
-      $keyword = $_GET['keyword'];
-  }
-
-  if (!isset($_GET['cat'])) {
-      $category = '';
-      $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
-                                                            LIMIT $start_from,$results_per_page";
-      $result = $conn->query($sql);
-
-  }
-  else {
-      $category = $_GET['cat'];
-  }
-  
-  if (!isset($_GET['order_by'])) {
-      $ordering = '';
-      $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
-                                                            LIMIT $start_from,$results_per_page";
-      $result = $conn->query($sql);
-  }
-  else {
-      $ordering = $_GET['order_by'];
-      if ($ordering == "date")
-      {
-          if ($category == 'all') {
-              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
-                      WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')
-                                                            ORDER BY end_date DESC
-                                                            LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
-              $data = "SELECT * FROM item WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')";
-              $data_result = $conn ->query($data);
-              $num_results = mysqli_num_rows($data_result);
-              $max_page = ceil($num_results / $results_per_page);
-
-          }
-          else {
-              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
-                      WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
-                                                            ORDER BY end_date DESC
-                                                            LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
-              $data = "SELECT * FROM item WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
-              $data_result = $conn ->query($data);
-              $num_results = mysqli_num_rows($data_result);
-              $max_page = ceil($num_results / $results_per_page);
-
-          }
-
-      }
-      elseif ($ordering == "pricelow")
-      {
-
-          if ($category == 'all') {
-              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
-                      WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
-                                                            ORDER BY LENGTH(current_price), current_price
-                                                            LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
-              $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
-              $data_result = $conn ->query($data);
-              $num_results = mysqli_num_rows($data_result);
-              $max_page = ceil($num_results / $results_per_page);
-
-          }
-          else {
-              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
-                      WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
-                                                            ORDER BY LENGTH(current_price), current_price
-                                                            LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
-              $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
-              $data_result = $conn ->query($data);
-              $num_results = mysqli_num_rows($data_result);
-              $max_page = ceil($num_results / $results_per_page);
-
-          }
-
-      }
-      elseif ($ordering == "pricehigh")
-      {
-
-          if ($category == 'all') {
-              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
-                      WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
-                                                            ORDER BY LENGTH(current_price) DESC, current_price DESC 
-                                                            LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
-              $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
-              $data_result = $conn ->query($data);
-              $num_results = mysqli_num_rows($data_result);
-              $max_page = ceil($num_results / $results_per_page);
-
-          }
-          else {
-              $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
-                      WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
-                                                            ORDER BY LENGTH(current_price) DESC, current_price DESC 
-                                                            LIMIT $start_from,$results_per_page";
-              $result = $conn->query($sql);
-              $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
-              $data_result = $conn ->query($data);
-              $num_results = mysqli_num_rows($data_result);
-              $max_page = ceil($num_results / $results_per_page);
-
-          }
-      }
-  }
-
-  
-  if (!isset($_GET['page'])) {
-    $curr_page = 1;
-  }
-  else {
-    $curr_page = $_GET['page'];
-  }
-
-  /* TODO: Use above values to construct a query. Use this query to 
-     retrieve data from the database. (If there is no form data entered,
-     decide on appropriate default value/default query to make. */
-  
-  /* For the purposes of pagination, it would also be helpful to know the
-     total number of results that satisfy the above query */
-
-?>
-
-<div class="container mt-5">
-
-<!-- TODO: If result set is empty, print an informative message. Otherwise... -->
-
-<ul class="list-group">
-
-<!-- TODO: Use a while loop to print a list item for each auction listing
-     retrieved from the query -->
-
-<?php
-
-if ($result->num_rows > 0) {
-
-
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-        $list_id = $row["item_id"];
-        $title = $row["title"];
-        $description = $row["description"];
-        $current_price = $row["current_price"];
-        $num_bids = $row["num_bids"];
-        try {
-            $end_time = new DateTime($row["end_date"]);
-        } catch (Exception $e) {
-        }
-        $item_id = $row["item_id"];
-        print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_time);
-
-    }
-} else {
-    echo "0 results";
 }
+else {
+    $keyword = $_GET['keyword'];
+}
+
+if (!isset($_GET['cat'])) {
+    $category = '';
+    $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
+                                                            LIMIT $start_from,$results_per_page";
+    $result = $link->query($sql);
+
+}
+else {
+    $category = $_GET['cat'];
+}
+
+if (!isset($_GET['order_by'])) {
+    $ordering = '';
+    $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item 
+                                                            LIMIT $start_from,$results_per_page";
+    $result = $link->query($sql);
+}
+else {
+    $ordering = $_GET['order_by'];
+    if ($ordering == "date")
+    {
+        if ($category == 'all') {
+            $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')
+                                                            ORDER BY end_date
+                                                            LIMIT $start_from,$results_per_page";
+            $result = $link->query($sql);
+            $data = "SELECT * FROM item WHERE ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')) AND (status = '0')";
+            $data_result = $link ->query($data);
+            $num_results = mysqli_num_rows($data_result);
+            $max_page = ceil($num_results / $results_per_page);
+
+        }
+        else {
+            $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
+                                                            ORDER BY end_date
+                                                            LIMIT $start_from,$results_per_page";
+            $result = $link->query($sql);
+            $data = "SELECT * FROM item WHERE (category='$category') AND (status = '0') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
+            $data_result = $link ->query($data);
+            $num_results = mysqli_num_rows($data_result);
+            $max_page = ceil($num_results / $results_per_page);
+
+        }
+
+    }
+    elseif ($ordering == "pricelow")
+    {
+
+        if ($category == 'all') {
+            $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
+                                                            ORDER BY LENGTH(current_price), current_price
+                                                            LIMIT $start_from,$results_per_page";
+            $result = $link->query($sql);
+            $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
+            $data_result = $link ->query($data);
+            $num_results = mysqli_num_rows($data_result);
+            $max_page = ceil($num_results / $results_per_page);
+
+        }
+        else {
+            $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
+                                                            ORDER BY LENGTH(current_price), current_price
+                                                            LIMIT $start_from,$results_per_page";
+            $result = $link->query($sql);
+            $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
+            $data_result = $link ->query($data);
+            $num_results = mysqli_num_rows($data_result);
+            $max_page = ceil($num_results / $results_per_page);
+
+        }
+
+    }
+    elseif ($ordering == "pricehigh")
+    {
+
+        if ($category == 'all') {
+            $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')
+                                                            ORDER BY LENGTH(current_price) DESC, current_price DESC 
+                                                            LIMIT $start_from,$results_per_page";
+            $result = $link->query($sql);
+            $data = "SELECT * FROM item WHERE (title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%')";
+            $data_result = $link ->query($data);
+            $num_results = mysqli_num_rows($data_result);
+            $max_page = ceil($num_results / $results_per_page);
+
+        }
+        else {
+            $sql = "SELECT item_id, title, description, current_price, num_bids, end_date  FROM  item
+                      WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))
+                                                            ORDER BY LENGTH(current_price) DESC, current_price DESC 
+                                                            LIMIT $start_from,$results_per_page";
+            $result = $link->query($sql);
+            $data = "SELECT * FROM item WHERE (category='$category') AND ((title LIKE '%$keyword%') OR (category LIKE '%$keyword%') OR (description LIKE '%$keyword%'))";
+            $data_result = $link ->query($data);
+            $num_results = mysqli_num_rows($data_result);
+            $max_page = ceil($num_results / $results_per_page);
+
+        }
+    }
+}
+
+
+if (!isset($_GET['page'])) {
+    $curr_page = 1;
+}
+else {
+    $curr_page = $_GET['page'];
+}
+
 ?>
 
-</ul>
+    <div class="container mt-5">
 
-<!-- Pagination for results listings -->
-<nav aria-label="Search results pages" class="mt-5">
-  <ul class="pagination justify-content-center">
-  
-<?php
+        <!-- TODO: If result set is empty, print an informative message. Otherwise... -->
 
-  // Copy any currently-set GET variables to the URL.
-  $querystring = "";
-  foreach ($_GET as $key => $value) {
-    if ($key != "page") {
-      $querystring .= "$key=$value&amp;";
-    }
-  }
-  
-  $high_page_boost = max(3 - $curr_page, 0);
-  $low_page_boost = max(2 - ($max_page - $curr_page), 0);
-  $low_page = max(1, $curr_page - 2 - $low_page_boost);
-  $high_page = min($max_page, $curr_page + 2 + $high_page_boost);
-  
-  if ($curr_page != 1) {
-    echo('
+        <ul class="list-group">
+
+            <!-- TODO: Use a while loop to print a list item for each auction listing
+                 retrieved from the query -->
+
+            <?php
+
+            if ($result->num_rows > 0) {
+
+                // output data of each row
+                while($row = $result->fetch_assoc()) {
+                    $list_id = $row["item_id"];
+                    $title = $row["title"];
+                    $description = $row["description"];
+                    $current_price = $row["current_price"];
+                    $num_bids = $row["num_bids"];
+                    try {
+                        $end_time = new DateTime($row["end_date"]);
+                    } catch (Exception $e) {
+                    }
+                    $item_id = $row["item_id"];
+                    print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_time);
+
+                }
+            } else {
+                echo "0 results";
+            }
+            ?>
+
+        </ul>
+
+        <!-- Pagination for results listings -->
+        <nav aria-label="Search results pages" class="mt-5">
+            <ul class="pagination justify-content-center">
+
+                <?php
+
+                // Copy any currently-set GET variables to the URL.
+                $querystring = "";
+                foreach ($_GET as $key => $value) {
+                    if ($key != "page") {
+                        $querystring .= "$key=$value&amp;";
+                    }
+                }
+
+                $high_page_boost = max(3 - $curr_page, 0);
+                $low_page_boost = max(2 - ($max_page - $curr_page), 0);
+                $low_page = max(1, $curr_page - 2 - $low_page_boost);
+                $high_page = min($max_page, $curr_page + 2 + $high_page_boost);
+
+                if ($curr_page != 1) {
+                    echo('
     <li class="page-item">
       <a class="page-link" href="browse.php?' . $querystring . 'page=' . ($curr_page - 1) . '" aria-label="Previous">
         <span aria-hidden="true"><i class="fa fa-arrow-left"></i></span>
         <span class="sr-only">Previous</span>
       </a>
     </li>');
-  }
-    
-  for ($i = $low_page; $i <= $high_page; $i++) {
-    if ($i == $curr_page) {
-      // Highlight the link
-      echo('
+                }
+
+                for ($i = $low_page; $i <= $high_page; $i++) {
+                    if ($i == $curr_page) {
+                        // Highlight the link
+                        echo('
     <li class="page-item active">');
-    }
-    else {
-      // Non-highlighted link
-      echo('
+                    }
+                    else {
+                        // Non-highlighted link
+                        echo('
     <li class="page-item">');
-    }
-    
-    // Do this in any case
-    echo('
+                    }
+
+                    // Do this in any case
+                    echo('
       <a class="page-link" href="browse.php?' . $querystring . 'page=' . $i . '">' . $i . '</a>
     </li>');
-  }
-  
-  if ($curr_page != $max_page) {
-    echo('
+                }
+
+                if ($curr_page != $max_page) {
+                    echo('
     <li class="page-item">
       <a class="page-link" href="browse.php?' . $querystring . 'page=' . ($curr_page + 1) . '" aria-label="Next">
         <span aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
         <span class="sr-only">Next</span>
       </a>
     </li>');
-  }
+                }
 
-$conn->close();
+                $link->close();
 
-?>
+                ?>
 
-  </ul>
-</nav>
+            </ul>
+        </nav>
 
 
-</div>
+    </div>
 
 
 <?php include_once("footer.php")?>
