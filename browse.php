@@ -68,7 +68,7 @@ if ($link->connect_error) {
     die("Connection failed: " . $link->connect_error);
 }
 
-$sql = "SELECT * FROM item";
+$sql = "SELECT * FROM item WHERE status = '0'";
 $result = $link->query($sql);
 $now = new DateTime();
 
@@ -107,8 +107,6 @@ if ($result->num_rows > 0) {
                     $body = "Hi there, <br/> <br/> You won the auction on ".title."<br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
                     send_email($buyer_email, $subject, $body);
                 }
-                $check = "UPDATE item SET status = '3' WHERE item_id = '$id'";
-
             }
             else {
                 $check = "UPDATE item SET status = '2' WHERE item_id = '$id'";
@@ -121,7 +119,6 @@ if ($result->num_rows > 0) {
                     $body = "Hi there, <br/> <br/> Your ".title." did not reach the reserved price. <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
                     send_email($seller_email, $subject, $body);
                 }
-                $check = "UPDATE item SET status = '4' WHERE item_id = '$id'";
             }
             mysqli_query($link,$check);
         }
