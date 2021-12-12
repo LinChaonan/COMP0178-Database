@@ -19,7 +19,6 @@ if ($info_result->num_rows > 0) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body{text-align: center; }
     </style>
@@ -31,18 +30,16 @@ if ($info_result->num_rows > 0) {
   </div>
   <div class="form-group row">
     <label for="email" style="font-size: 1.2em" class="col-sm-2 col-form-label text-right">Email:</label>
-    <label for="email" style="font-size: 1.2em" class="col-sm-2 col-form-label text-right">' . $email . '</label>
+    <label for="email" style="font-size: 1.2em" class="col-sm-2 col-form-label text-center">' . $email . '</label>
   </div>
   <div class="form-group row">
     <label for="Address" style="font-size: 1.2em" class="col-sm-2 col-form-label text-right">Address:</label>
-    <label for="Address" style="font-size: 1.2em" class="col-sm-2 col-form-label text-right">' . $address . '</label>
+    <label for="Address" style="font-size: 1.2em" class="col-sm-2 col-form-label text-center">' . $address . '</label>
   </div>
   <div class="form-group row">
     <label for="Phone Number" style="font-size: 1.2em" class="col-sm-2 col-form-label text-right">Phone Number:</label>
-    <label for="Phone Number" style="font-size: 1.2em" class="col-sm-2 col-form-label text-right">' . $phone . '</label>
+    <label for="Phone Number" style="font-size: 1.2em" class="col-sm-2 col-form-label text-center">' . $phone . '</label>
   </div>
-
-
 ')
 ?>
 <p>

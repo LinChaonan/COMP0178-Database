@@ -46,10 +46,10 @@
   $h_result = $link->query($h_sql);
   $h_exist_result = $link->query($h_exist);
 
-    if ($h_result->num_rows > 0) {
-        $h_row = $h_result->fetch_assoc();
-        $revenue = $h_row["SUM(current_price)"];
-    } else {
+  $h_row = $h_result->fetch_assoc();
+  $revenue = $h_row["SUM(current_price)"];
+
+    if (empty($revenue)) {
         $revenue = "0";
     }
 
