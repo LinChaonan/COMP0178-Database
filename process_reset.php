@@ -55,10 +55,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_query($link, $sql)) {
 
         echo ('<script>alert("The password is changed successfully.")</script>');
-        //$subject = "Password Changed";
-        //$body = "Hi there, <br/> <br/> The password for your Simple Click account has changed. <br/> <br/> Enjoy you journey at Simple Click! <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/> ";
-        //send_email($email, $subject, $body);
-
+        $emails = "SELECT email FROM user WHERE user_id = '$id'";
+        $email_result = $link->query($emails);
+        while ($row = mysqli_fetch_array($email_result)) {
+            $email = $row['email'];
+            $subject = "Password Changed";
+            $body = "Hi there, <br/> <br/> The password for your Simple Click account has changed. <br/> <br/> Enjoy you journey at Simple Click! <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/> ";
+            send_email($email, $subject, $body);
+        }
     }
 }
 mysqli_close($link);
