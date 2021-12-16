@@ -165,9 +165,11 @@
 
                 $dsn = "mysql:host = $host;dbname=$dbName";
                 $pdo = new PDO($dsn,$user,$pass);
-                $query = "select name,path from image where id=$id";
+                $query = "select name,path from images where image_id='$id'";
 
-                //数据查询
+                $update_pic = "UPDATE images SET item_id='$id' WHERE image_id='$item_id'";
+                mysqli_query($link,$update_pic);
+
                 $result = $pdo->query($query);
                 if($result){
                     $result = $result->fetchAll(2);
