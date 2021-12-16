@@ -41,7 +41,7 @@
 
   $h_seller_id = $_SESSION['userID'];
   $h_sql = "select seller_id,SUM(current_price)from item where seller_id='$h_seller_id' and status= '1'";
-  $h_exist = "select * from seller where seller_id='$h_seller_id'";
+  $h_exist = "select * from income where seller_id='$h_seller_id'";
 
   $h_result = $link->query($h_sql);
   $h_exist_result = $link->query($h_exist);
@@ -54,13 +54,10 @@
     }
 
     if ($h_exist_result->num_rows > 0) {
-    $update = "UPDATE seller SET revenue='$revenue' WHERE seller_id='$h_seller_id'";
-    }
-    else {
-        $update = "insert into seller (seller_id, revenue) values('$h_seller_id','$revenue')";
+        $income = "insert into income (seller_id, revenue) values('$h_seller_id','$revenue')";
     }
 
-    mysqli_query($link,$update);
+    mysqli_query($link,$income);
 
 ?>
 
