@@ -19,30 +19,42 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = $_POST["address"];
 
     if (!isset($_POST['repeat_password'], $_POST['password'], $_POST['email'])) {
-        exit('<script>alert("Please complete the registration form")</script>');
+        echo('<script>alert("Please complete the registration form")</script>');
+        header("refresh:0;url=register.php");
+        die();
     }
 
     if (empty($_POST['repeat_password']) || empty($_POST['password']) || empty($_POST['email'])) {
-        exit('<script>alert("Please complete the registration form")</script>');
+        echo('<script>alert("Please complete the registration form")</script>');
+        header("refresh:0;url=register.php");
+        die();
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        exit('<script>alert("Invalid email format")</script>');
+        echo('<script>alert("Invalid email format")</script>');
+        header("refresh:0;url=register.php");
+        die();
     }
 
     if(strlen($password) < 6){
-        exit('<script>alert("Password must have at least 6 characters")</script>');
+        echo('<script>alert("Password must have at least 6 characters")</script>');
+        header("refresh:0;url=register.php");
+        die();
     }
 
     if ($password != $repeat_password){
-        exit('<script>alert("Passwords do not match")</script>');
+        echo('<script>alert("Passwords do not match")</script>');
+        header("refresh:0;url=register.php");
+        die();
     }
 
     if (((strlen($phone) > 6) and (strlen($phone) < 14)) or (strlen($phone) == 0)){
 
     }
     else{
-        exit('<script>alert("Please enter a valid phone number")</script>');
+        echo('<script>alert("Please enter a valid phone number")</script>');
+        header("refresh:0;url=register.php");
+        die();
     }
 
     if ((preg_match('/^[0-9-+]{7}$/',$phone))
@@ -57,7 +69,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     }
     else{
-        exit('<script>alert("Password enter a valid phone number")</script>');
+        echo('<script>alert("Password enter a valid phone number")</script>');
+        header("refresh:0;url=register.php");
+        die();
     }
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
