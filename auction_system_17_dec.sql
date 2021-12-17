@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： localhost:8889
--- 生成日期： 2021-12-07 20:58:23
+-- 生成日期： 2021-12-17 14:19:40
 -- 服务器版本： 5.7.34
 -- PHP 版本： 7.4.21
 
@@ -38,61 +38,75 @@ CREATE TABLE `historical_auction_price` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `image`
+-- 表的结构 `images`
 --
 
-CREATE TABLE `image` (
-  `id` int(4) UNSIGNED NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `path` varchar(100) DEFAULT NULL,
+CREATE TABLE `images` (
+  `image_id` int(10) NOT NULL,
+  `item_id` int(10) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `path` varchar(100) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `image`
+-- 转存表中的数据 `images`
 --
 
-INSERT INTO `image` (`id`, `name`, `path`, `time`) VALUES
-(1, '1.png', './images/1.png', '2021-12-02 14:57:12'),
-(2, '2.png', './images/2.png', '2021-12-02 14:59:22'),
-(3, '3.png', './images/3.png', '2021-12-02 15:00:32'),
-(4, '4.png', './images/4.png', '2021-12-02 15:30:16'),
-(5, '5.png', './images/5.png', '2021-12-02 16:22:06'),
-(6, '6.png', './images/6.png', '2021-12-02 16:22:06'),
-(7, '7.png', './images/7.png', '2021-12-02 16:22:06'),
-(8, '8.png', './images/8.png', '2021-12-02 16:22:06'),
-(9, '9.png', './images/9.png', '2021-12-02 16:22:06'),
-(10, '10.png', './images/10.png', '2021-12-02 16:22:06'),
-(11, '11.png', './images/11.png', '2021-12-02 16:22:06'),
-(12, '12.png', './images/12.png', '2021-12-02 16:22:06'),
-(13, '13.png', './images/13.png', '2021-12-02 16:22:06'),
-(14, '14.png', './images/14.png', '2021-12-02 16:22:06'),
-(15, '15.png', './images/15.png', '2021-12-02 16:22:06'),
-(16, '16.png', './images/16.png', '2021-12-02 16:22:06'),
-(17, '17.png', './images/17.png', '2021-12-02 16:22:06'),
-(18, '18.png', './images/18.png', '2021-12-02 16:22:06'),
-(19, '19.png', './images/19.png', '2021-12-02 16:22:06'),
-(20, '20.png', './images/20.png', '2021-12-02 16:22:06'),
-(21, '21.png', './images/21.png', '2021-12-02 16:22:06'),
-(22, '22.png', './images/22.png', '2021-12-02 16:22:06'),
-(23, '23.png', './images/23.png', '2021-12-02 16:22:06'),
-(24, '24.png', './images/24.png', '2021-12-02 16:22:06'),
-(25, '25.png', './images/25.png', '2021-12-02 16:22:06'),
-(26, '26.png', './images/26.png', '2021-12-02 16:22:06'),
-(27, '27.png', './images/27.png', '2021-12-02 16:22:06'),
-(28, '28.png', './images/28.png', '2021-12-02 16:22:06'),
-(29, '29.png', './images/29.png', '2021-12-02 16:22:06'),
-(30, '30.png', './images/30.png', '2021-12-02 16:22:06'),
-(31, '31.png', './images/31.png', '2021-12-02 16:22:06'),
-(32, '32.png', './images/32.png', '2021-12-02 16:22:06'),
-(33, '33.png', './images/33.png', '2021-12-02 16:22:06'),
-(34, '34.png', './images/34.png', '2021-12-02 16:22:06'),
-(35, '35.png', './images/35.png', '2021-12-02 16:22:06'),
-(36, '36.png', './images/36.png', '2021-12-02 16:22:06'),
-(37, '37.png', './images/37.png', '2021-12-02 16:22:06'),
-(38, '38.png', './images/38.png', '2021-12-02 16:22:06'),
-(39, '39.png', './images/39.png', '2021-12-02 16:22:06'),
-(40, '40.png', './images/40.png', '2021-12-02 16:22:06');
+INSERT INTO `images` (`image_id`, `item_id`, `name`, `path`, `time`) VALUES
+(1, 1, '1.png', './images/1.png', '2021-12-02 14:57:12'),
+(2, 2, '2.png', './images/2.png', '2021-12-02 14:59:22'),
+(3, 3, '3.png', './images/3.png', '2021-12-02 15:00:32'),
+(4, 4, '4.png', './images/4.png', '2021-12-02 15:30:16'),
+(5, 5, '5.png', './images/5.png', '2021-12-02 16:22:06'),
+(6, 6, '6.png', './images/6.png', '2021-12-02 16:22:06'),
+(7, 7, '7.png', './images/7.png', '2021-12-02 16:22:06'),
+(8, 8, '8.png', './images/8.png', '2021-12-02 16:22:06'),
+(9, 9, '9.png', './images/9.png', '2021-12-02 16:22:06'),
+(10, 10, '10.png', './images/10.png', '2021-12-02 16:22:06'),
+(11, 11, '11.png', './images/11.png', '2021-12-02 16:22:06'),
+(12, 12, '12.png', './images/12.png', '2021-12-02 16:22:06'),
+(13, 13, '13.png', './images/13.png', '2021-12-02 16:22:06'),
+(14, 14, '14.png', './images/14.png', '2021-12-02 16:22:06'),
+(15, 15, '15.png', './images/15.png', '2021-12-02 16:22:06'),
+(16, 16, '16.png', './images/16.png', '2021-12-02 16:22:06'),
+(17, 17, '17.png', './images/17.png', '2021-12-02 16:22:06'),
+(18, 18, '18.png', './images/18.png', '2021-12-02 16:22:06'),
+(19, 19, '19.png', './images/19.png', '2021-12-02 16:22:06'),
+(20, 20, '20.png', './images/20.png', '2021-12-02 16:22:06'),
+(21, 21, '21.png', './images/21.png', '2021-12-02 16:22:06'),
+(22, 22, '22.png', './images/22.png', '2021-12-02 16:22:06'),
+(23, 23, '23.png', './images/23.png', '2021-12-02 16:22:06'),
+(24, 24, '24.png', './images/24.png', '2021-12-02 16:22:06'),
+(25, 25, '25.png', './images/25.png', '2021-12-02 16:22:06'),
+(26, 26, '26.png', './images/26.png', '2021-12-02 16:22:06'),
+(27, 27, '27.png', './images/27.png', '2021-12-02 16:22:06'),
+(28, 28, '28.png', './images/28.png', '2021-12-02 16:22:06'),
+(29, 29, '29.png', './images/29.png', '2021-12-02 16:22:06'),
+(30, 30, '30.png', './images/30.png', '2021-12-02 16:22:06'),
+(31, 31, '31.png', './images/31.png', '2021-12-02 16:22:06'),
+(32, 32, '32.png', './images/32.png', '2021-12-02 16:22:06'),
+(33, 33, '33.png', './images/33.png', '2021-12-02 16:22:06'),
+(34, 34, '34.png', './images/34.png', '2021-12-02 16:22:06'),
+(35, 35, '35.png', './images/35.png', '2021-12-02 16:22:06'),
+(36, 36, '36.png', './images/36.png', '2021-12-02 16:22:06'),
+(37, 37, '37.png', './images/37.png', '2021-12-02 16:22:06'),
+(38, 38, '38.png', './images/38.png', '2021-12-02 16:22:06'),
+(39, 39, '39.png', './images/39.png', '2021-12-02 16:22:06'),
+(40, 40, '40.png', './images/40.png', '2021-12-02 16:22:06');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `income`
+--
+
+CREATE TABLE `income` (
+  `income_id` int(10) NOT NULL,
+  `seller_id` int(10) NOT NULL,
+  `revenue` int(20) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -171,22 +185,22 @@ CREATE TABLE `user` (
   `user_id` int(10) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `bank_detail` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `phone` varchar(100) DEFAULT NULL,
-  `account_type` varchar(100) NOT NULL
+  `account_type` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `user`
 --
 
-INSERT INTO `user` (`user_id`, `email`, `password`, `bank_detail`, `address`, `phone`, `account_type`) VALUES
-(1, 'buyer1@gmail.com', '$2y$10$cUjv8nZXHgeg8TPuaMdY1eccnYrKKr2Z3eYkw70wl93SE4WCW4Xx.', NULL, NULL, NULL, 'buyer'),
-(2, 'buyer2@gmail.com', '$2y$10$taby/IIEOwTjwFgkCy7QVehap1TyEOEuO5rknRfSCaHQZLxjv.aOq', NULL, NULL, NULL, 'buyer'),
-(3, 'buyer3@gmail.com', '$2y$10$/w3HDDRBMiLzPMdIR/2t/.iaSLkhyXQsJPiXzOfV.YAcF.FvVuc4K', NULL, NULL, NULL, 'buyer'),
-(4, 'buyer4@gmail.com', '$2y$10$B4c4qghNnorHkI3dt5r4e.2946FXoeX5uVRoJb1JXDy6CZNK/Cmu2', NULL, NULL, NULL, 'buyer'),
-(5, 'seller1@gmail.com', '$2y$10$0nDYWb2XAcXkZjdCA398o.YhJqwRTPDH1sL/Lo7m2JLPb3YJUX9y.', NULL, NULL, NULL, 'seller');
+INSERT INTO `user` (`user_id`, `email`, `password`, `address`, `phone`, `account_type`) VALUES
+(1, 'buyer1@gmail.com', '$2y$10$cUjv8nZXHgeg8TPuaMdY1eccnYrKKr2Z3eYkw70wl93SE4WCW4Xx.', NULL, NULL, 'buyer'),
+(2, 'buyer2@gmail.com', '$2y$10$taby/IIEOwTjwFgkCy7QVehap1TyEOEuO5rknRfSCaHQZLxjv.aOq', NULL, NULL, 'buyer'),
+(3, 'buyer3@gmail.com', '$2y$10$/w3HDDRBMiLzPMdIR/2t/.iaSLkhyXQsJPiXzOfV.YAcF.FvVuc4K', NULL, NULL, 'buyer'),
+(4, 'buyer4@gmail.com', '$2y$10$B4c4qghNnorHkI3dt5r4e.2946FXoeX5uVRoJb1JXDy6CZNK/Cmu2', NULL, NULL, 'buyer'),
+(5, 'seller1@gmail.com', '$2y$10$0nDYWb2XAcXkZjdCA398o.YhJqwRTPDH1sL/Lo7m2JLPb3YJUX9y.', NULL, NULL, 'seller'),
+(19, 'buller9@gmail.com', '$2y$10$vFBAI4Sd4FGYJMsC6i55b.kpBMkEvkCd.k9QJKUzjTZxw15/VefEq', '', '', 'buyer');
 
 -- --------------------------------------------------------
 
@@ -195,9 +209,9 @@ INSERT INTO `user` (`user_id`, `email`, `password`, `bank_detail`, `address`, `p
 --
 
 CREATE TABLE `watch_list` (
-  `watch_id` int(20) NOT NULL,
-  `item_id` int(20) DEFAULT NULL,
-  `user_id` int(20) DEFAULT NULL
+  `watch_id` int(10) NOT NULL,
+  `item_id` int(10) DEFAULT NULL,
+  `user_id` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -211,10 +225,17 @@ ALTER TABLE `historical_auction_price`
   ADD PRIMARY KEY (`auction_id`);
 
 --
--- 表的索引 `image`
+-- 表的索引 `images`
 --
-ALTER TABLE `image`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `images`
+  ADD PRIMARY KEY (`image_id`),
+  ADD UNIQUE KEY `images_image_id_uindex` (`image_id`);
+
+--
+-- 表的索引 `income`
+--
+ALTER TABLE `income`
+  ADD PRIMARY KEY (`income_id`);
 
 --
 -- 表的索引 `item`
@@ -247,28 +268,34 @@ ALTER TABLE `historical_auction_price`
   MODIFY `auction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- 使用表AUTO_INCREMENT `image`
+-- 使用表AUTO_INCREMENT `images`
 --
-ALTER TABLE `image`
-  MODIFY `id` int(4) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+ALTER TABLE `images`
+  MODIFY `image_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- 使用表AUTO_INCREMENT `income`
+--
+ALTER TABLE `income`
+  MODIFY `income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- 使用表AUTO_INCREMENT `item`
 --
 ALTER TABLE `item`
-  MODIFY `item_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `item_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- 使用表AUTO_INCREMENT `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- 使用表AUTO_INCREMENT `watch_list`
 --
 ALTER TABLE `watch_list`
-  MODIFY `watch_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `watch_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
