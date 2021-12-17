@@ -165,10 +165,7 @@
 
                 $dsn = "mysql:host = $host;dbname=$dbName";
                 $pdo = new PDO($dsn,$user,$pass);
-                $query = "select name,path from images where image_id='$id'";
-
-                $update_pic = "UPDATE images SET item_id='$id' WHERE image_id='$item_id'";
-                mysqli_query($link,$update_pic);
+                $query = "select name,path from images where item_id='$id'";
 
                 $result = $pdo->query($query);
                 if($result){

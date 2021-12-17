@@ -58,7 +58,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if (mysqli_query($link, $sql)) {
             echo "<script>alert('Auction created successfully')</script>";
-
+            $last = mysqli_insert_id($link);
             // Send mail to the seller.
             $emails = "SELECT email FROM user WHERE user_id = '$seller_id'";
             $email_result = $link->query($emails);
@@ -71,7 +71,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($link);
         }
-
 
 
     $upfile=$_FILES["pic"];
@@ -93,7 +92,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 case 4:
                     $newfile = 'No image';
                     $path = './images/0.jpg';
-                    $query = "INSERT INTO images(name,path)VALUES('$newfile','$path')";
+                    $query = "INSERT INTO images(item_id,name,path)VALUES('$last','$newfile','$path')";
                     $result = $link-> query($query);
                     echo('<div class="text-center">Auction successfully created! <a href ="mylistings.php">View your new listing.</a></div>');
                     die();
@@ -127,7 +126,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             //Upload file (move file)
             if(move_uploaded_file($upfile["tmp_name"],$path.$newfile)){
                 //Store pic name and path into database
-                $query = "INSERT INTO images(name,path)VALUES('$newfile','$path$newfile')";
+                $query = "INSERT INTO images(item_id,name,path)VALUES('$last','$newfile','$path$newfile')";
                 $result = $link -> query($query);
 
                 if($result){
