@@ -104,7 +104,7 @@ if ($result->num_rows > 0) {
                 while ($row = mysqli_fetch_array($result)) {
                     $buyer_email = $row['email'];
                     $subject = "You Won The Auction";
-                    $body = "Hi there, <br/> <br/> You won the auction on ".title."<br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                    $body = "Hi there, <br/> <br/> You won the auction on ".$title."!<br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
                     send_email($buyer_email, $subject, $body);
                 }
             }
@@ -115,8 +115,8 @@ if ($result->num_rows > 0) {
                 $email_result = $link->query($Seller_emails);
                 while ($row = mysqli_fetch_array($email_result)) {
                     $seller_email = $row['email'];
-                    $subject = "The price of your ".title."did not reach the reserved price";
-                    $body = "Hi there, <br/> <br/> Your ".title." did not reach the reserved price. <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
+                    $subject = "The price of your ".$title."did not reach the reserved price";
+                    $body = "Hi there, <br/> <br/> Your ".$title." did not reach the reserved price. <br/> <br/> Kind regards, <br/> Simple Click Marketing Team <br/>";
                     send_email($seller_email, $subject, $body);
                 }
             }
