@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- 主机： localhost:8889
--- 生成日期： 2021-12-18 21:48:46
--- 服务器版本： 5.7.34
--- PHP 版本： 7.4.21
+-- Host: localhost:8889
+-- Generation Time: Dec 18, 2021 at 10:45 PM
+-- Server version: 5.7.34
+-- PHP Version: 7.4.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- 数据库： `auction_system`
+-- Database: `auction_system`
 --
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `historical_auction_price`
+-- Table structure for table `historical_auction_price`
 --
 
 CREATE TABLE `historical_auction_price` (
@@ -38,7 +38,7 @@ CREATE TABLE `historical_auction_price` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `images`
+-- Table structure for table `images`
 --
 
 CREATE TABLE `images` (
@@ -50,7 +50,7 @@ CREATE TABLE `images` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `images`
+-- Dumping data for table `images`
 --
 
 INSERT INTO `images` (`image_id`, `item_id`, `name`, `path`, `time`) VALUES
@@ -98,7 +98,7 @@ INSERT INTO `images` (`image_id`, `item_id`, `name`, `path`, `time`) VALUES
 -- --------------------------------------------------------
 
 --
--- 表的结构 `income`
+-- Table structure for table `income`
 --
 
 CREATE TABLE `income` (
@@ -111,7 +111,7 @@ CREATE TABLE `income` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `item`
+-- Table structure for table `item`
 --
 
 CREATE TABLE `item` (
@@ -130,7 +130,7 @@ CREATE TABLE `item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `item`
+-- Dumping data for table `item`
 --
 
 INSERT INTO `item` (`item_id`, `seller_id`, `category`, `status`, `title`, `description`, `start_price`, `reserve_price`, `current_price`, `num_bids`, `buyer_id`, `end_date`) VALUES
@@ -178,7 +178,7 @@ INSERT INTO `item` (`item_id`, `seller_id`, `category`, `status`, `title`, `desc
 -- --------------------------------------------------------
 
 --
--- 表的结构 `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -191,7 +191,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`user_id`, `email`, `password`, `address`, `phone`, `account_type`) VALUES
@@ -205,7 +205,7 @@ INSERT INTO `user` (`user_id`, `email`, `password`, `address`, `phone`, `account
 -- --------------------------------------------------------
 
 --
--- 表的结构 `watch_list`
+-- Table structure for table `watch_list`
 --
 
 CREATE TABLE `watch_list` (
@@ -215,11 +215,11 @@ CREATE TABLE `watch_list` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转储表的索引
+-- Indexes for dumped tables
 --
 
 --
--- 表的索引 `historical_auction_price`
+-- Indexes for table `historical_auction_price`
 --
 ALTER TABLE `historical_auction_price`
   ADD PRIMARY KEY (`auction_id`),
@@ -227,7 +227,7 @@ ALTER TABLE `historical_auction_price`
   ADD KEY `historical_auction_price_user_user_id_fk` (`user_id`);
 
 --
--- 表的索引 `images`
+-- Indexes for table `images`
 --
 ALTER TABLE `images`
   ADD PRIMARY KEY (`image_id`),
@@ -235,14 +235,14 @@ ALTER TABLE `images`
   ADD KEY `images_item_item_id_fk` (`item_id`);
 
 --
--- 表的索引 `income`
+-- Indexes for table `income`
 --
 ALTER TABLE `income`
   ADD PRIMARY KEY (`income_id`),
   ADD KEY `income_user_user_id_fk` (`seller_id`);
 
 --
--- 表的索引 `item`
+-- Indexes for table `item`
 --
 ALTER TABLE `item`
   ADD PRIMARY KEY (`item_id`),
@@ -250,14 +250,14 @@ ALTER TABLE `item`
   ADD KEY `item_user_user_id_fk_2` (`buyer_id`);
 
 --
--- 表的索引 `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- 表的索引 `watch_list`
+-- Indexes for table `watch_list`
 --
 ALTER TABLE `watch_list`
   ADD PRIMARY KEY (`watch_id`),
@@ -265,77 +265,76 @@ ALTER TABLE `watch_list`
   ADD KEY `watch_list_item_item_id_fk` (`item_id`);
 
 --
--- 在导出的表使用AUTO_INCREMENT
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- 使用表AUTO_INCREMENT `historical_auction_price`
+-- AUTO_INCREMENT for table `historical_auction_price`
 --
 ALTER TABLE `historical_auction_price`
   MODIFY `auction_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- 使用表AUTO_INCREMENT `images`
+-- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
   MODIFY `image_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
--- 使用表AUTO_INCREMENT `income`
+-- AUTO_INCREMENT for table `income`
 --
 ALTER TABLE `income`
   MODIFY `income_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- 使用表AUTO_INCREMENT `item`
+-- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
   MODIFY `item_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
--- 使用表AUTO_INCREMENT `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- 使用表AUTO_INCREMENT `watch_list`
+-- AUTO_INCREMENT for table `watch_list`
 --
 ALTER TABLE `watch_list`
   MODIFY `watch_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- 限制导出的表
+-- Constraints for dumped tables
 --
 
 --
--- 限制表 `historical_auction_price`
+-- Constraints for table `historical_auction_price`
 --
 ALTER TABLE `historical_auction_price`
   ADD CONSTRAINT `historical_auction_price_item_item_id_fk` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `historical_auction_price_user_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- 限制表 `images`
+-- Constraints for table `images`
 --
 ALTER TABLE `images`
   ADD CONSTRAINT `images_item_item_id_fk` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- 限制表 `income`
+-- Constraints for table `income`
 --
 ALTER TABLE `income`
   ADD CONSTRAINT `income_user_user_id_fk` FOREIGN KEY (`seller_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- 限制表 `item`
+-- Constraints for table `item`
 --
 ALTER TABLE `item`
-  ADD CONSTRAINT `item_user_user_id_fk` FOREIGN KEY (`seller_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `item_user_user_id_fk_2` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `item_user_user_id_fk` FOREIGN KEY (`seller_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- 限制表 `watch_list`
+-- Constraints for table `watch_list`
 --
 ALTER TABLE `watch_list`
   ADD CONSTRAINT `watch_list_item_item_id_fk` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE,
