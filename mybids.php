@@ -54,6 +54,7 @@ require_once "config.php";
                 }
             } else {
                 echo "0 results";
+                die();
             }
             ?>
 
